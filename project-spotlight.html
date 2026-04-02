@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #FAFAF7; color: #1a1a18; }
+  :root { --accent: #2e7d65; --accent-light: #e6f3ee; --accent-mid: #c2dfd5; --accent-dark: #1f5446; }
+
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; height: 56px; background: #FAFAF7; border-bottom: 0.5px solid #deded8; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; color: #1a1a18; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 13px; color: #888; text-decoration: none; }
+  .nav-links a:hover { color: #1a1a18; }
+  .nav-links a.active { color: #1a1a18; font-weight: 500; }
+
+  .page-header { padding: 2.5rem 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .page-header h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300; line-height: 1.2; color: #1a1a18; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .page-header h1 strong { font-weight: 600; }
+  .page-header p { font-size: 0.95rem; color: #555; line-height: 1.75; }
+
+  .section-divider { height: 0.5px; background: #deded8; margin: 0 3rem; }
+
+  .spotlight-section { padding: 2.5rem 3rem 4rem; max-width: 900px; margin: 0 auto; }
+
+  .spotlight-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+  .spotlight-card { background: white; border: 0.5px solid #deded8; border-radius: 8px; padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 0.6rem; cursor: pointer; transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease; }
+  .spotlight-card:hover { border-color: #aaa; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+
+  .card-tag { display: inline-block; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 3px; align-self: flex-start; }
+  .card-name { font-size: 14px; font-weight: 600; color: #1a1a18; line-height: 1.35; }
+  .card-desc { font-size: 13px; color: #555; line-height: 1.65; flex: 1; }
+  .card-org { font-size: 12px; color: #aaa; font-weight: 400; }
+  .card-expand { font-size: 11px; color: #ccc; align-self: flex-end; margin-top: 0.25rem; transition: color 0.15s ease; letter-spacing: 0.04em; }
+  .spotlight-card:hover .card-expand { color: #aaa; }
+
+  .tag-p1 { background: #c8ede4; color: #1a5c4a; }
+  .tag-p2 { background: #d8cef0; color: #3d2a70; }
+  .tag-p3 { background: #f8d8c0; color: #7a3a1a; }
+  .tag-p4 { background: #c8d8f0; color: #1a3a70; }
+  .tag-p5 { background: #cceacc; color: #2a5a1a; }
+  .tag-p6 { background: #f8e8b8; color: #7a5010; }
+  .tag-p7 { background: #ecd0e4; color: #5a1a42; }
+
+  /* Modal */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(20, 20, 18, 0.5); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+  .modal-backdrop.visible { opacity: 1; pointer-events: all; }
+
+  .modal { background: #FAFAF7; border-radius: 10px; width: 100%; max-width: 820px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.18); transform: scale(0.96) translateY(8px); transition: transform 0.22s ease; }
+  .modal-backdrop.visible .modal { transform: scale(1) translateY(0); }
+
+  .modal-photo { width: 100%; height: 220px; background: #e8e8e4; display: flex; align-items: center; justify-content: center; border-radius: 10px 10px 0 0; overflow: hidden; position: relative; }
+  .modal-photo-placeholder { font-size: 12px; color: #aaa; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .modal-body { padding: 1.75rem 2rem 2rem; }
+  .modal-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+  .modal-org { font-size: 12px; color: #888; }
+  .modal-title { font-size: 1.35rem; font-weight: 600; color: #1a1a18; line-height: 1.25; margin-bottom: 1rem; }
+  .modal-divider { height: 0.5px; background: #deded8; margin-bottom: 1rem; }
+  .modal-desc { font-size: 0.95rem; color: #444; line-height: 1.8; }
+
+  .modal-close { position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px; background: rgba(255,255,255,0.85); border: none; border-radius: 50%; cursor: pointer; font-size: 16px; color: #555; display: flex; align-items: center; justify-content: center; line-height: 1; transition: background 0.15s ease; }
+  .modal-close:hover { background: white; color: #1a1a18; }
+
+  footer { padding: 1.75rem 3rem; border-top: 0.5px solid #deded8; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: #FAFAF7; }
+  footer p { font-size: 13px; color: var(--accent); font-weight: 500; }
+  .footer-right a { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .footer-right a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">AI for Democracy</span>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="pillars.html">Pillars</a>
+    <a href="#" class="active">Project Spotlight</a>
+    <a href="explore.html">Explore Data</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="contribute.html">Contribute</a>
+    <a href="learn-more.html">Learn More</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1><strong>Project Spotlight</strong></h1>
+  <p>Highlighting standout projects and initiatives using AI to strengthen or enable democratic resilience in the United States. More detail on the organizations can be found in the <a href="explore.html" style="color: var(--accent);">full dataset</a>, along with other notable projects.</p>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="spotlight-section">
+  <div class="spotlight-grid">
+
+    <div class="spotlight-card"
+      data-tag="Election Integrity" data-tag-class="tag-p2"
+      data-name="AI-Assisted Election Audit Tool"
+      data-org="Placeholder Organization"
+      data-desc="Uses machine learning to flag statistical anomalies in reported vote tallies, supporting post-election audits at the county level."
+      data-long="This tool applies machine learning models trained on historical election data to surface irregularities in reported vote tallies that warrant closer human review. Rather than replacing auditors, it prioritizes their attention — dramatically reducing the time required to identify races where a hand recount may be warranted. The project was piloted in three counties during the 2024 cycle and is currently being adapted for broader state-level deployment. Placeholder details to be replaced with real project information.">
+      <span class="card-tag tag-p2">Election Integrity</span>
+      <div class="card-name">AI-Assisted Election Audit Tool</div>
+      <div class="card-desc">Uses machine learning to flag statistical anomalies in reported vote tallies, supporting post-election audits at the county level.</div>
+      <div class="card-org">Placeholder Organization</div>
+      <span class="card-expand">↗ Read more</span>
+    </div>
+
+    <div class="spotlight-card"
+      data-tag="Information Environment" data-tag-class="tag-p4"
+      data-name="Synthetic Media Detection Project"
+      data-org="Placeholder Organization"
+      data-desc="Develops open-source classifiers to identify AI-generated audio and video circulating in political contexts ahead of major elections."
+      data-long="As AI-generated audio and video become increasingly indistinguishable from authentic media, this project maintains a suite of open-source detection classifiers updated on a rolling basis. The models are trained on labeled synthetic media samples and made freely available to newsrooms, election officials, and researchers. A browser extension allows journalists to run quick checks on suspect clips directly in their workflow. Placeholder details to be replaced with real project information.">
+      <span class="card-tag tag-p4">Information Environment</span>
+      <div class="card-name">Synthetic Media Detection Project</div>
+      <div class="card-desc">Develops open-source classifiers to identify AI-generated audio and video circulating in political contexts ahead of major elections.</div>
+      <div class="card-org">Placeholder Organization</div>
+      <span class="card-expand">↗ Read more</span>
+    </div>
+
+    <div class="spotlight-card"
+      data-tag="Civic Participation" data-tag-class="tag-p1"
+      data-name="AI-Powered Constituent Listening"
+      data-org="Placeholder Organization"
+      data-desc="Aggregates and clusters constituent feedback at scale, helping legislative offices identify emerging concerns without losing individual voices."
+      data-long="Legislative offices receive tens of thousands of constituent messages annually but lack the capacity to meaningfully engage with them at scale. This platform uses NLP to cluster incoming messages by topic and sentiment, presenting staff with a structured map of constituent concerns rather than an overwhelming inbox. Crucially, it preserves links to individual messages so that specific voices are never fully abstracted away. Placeholder details to be replaced with real project information.">
+      <span class="card-tag tag-p1">Civic Participation</span>
+      <div class="card-name">AI-Powered Constituent Listening</div>
+      <div class="card-desc">Aggregates and clusters constituent feedback at scale, helping legislative offices identify emerging concerns without losing individual voices.</div>
+      <div class="card-org">Placeholder Organization</div>
+      <span class="card-expand">↗ Read more</span>
+    </div>
+
+    <div class="spotlight-card"
+      data-tag="Accountability &amp; Transparency" data-tag-class="tag-p3"
+      data-name="Automated Legislative Tracker"
+      data-org="Placeholder Organization"
+      data-desc="Monitors thousands of state and federal bill updates in real time, surfacing policy changes relevant to civil liberties and voting rights."
+      data-long="Tracking legislation across 50 state legislatures and the federal government has historically required enormous human bandwidth. This system monitors bill text and status changes in real time, applying a classifier trained on civil liberties and voting rights precedents to flag high-priority developments for advocates and journalists. Subscribers receive daily digests filtered to their areas of focus. Placeholder details to be replaced with real project information.">
+      <span class="card-tag tag-p3">Accountability &amp; Transparency</span>
+      <div class="card-name">Automated Legislative Tracker</div>
+      <div class="card-desc">Monitors thousands of state and federal bill updates in real time, surfacing policy changes relevant to civil liberties and voting rights.</div>
+      <div class="card-org">Placeholder Organization</div>
+      <span class="card-expand">↗ Read more</span>
+    </div>
+
+    <div class="spotlight-card"
+      data-tag="Governance &amp; Policy" data-tag-class="tag-p7"
+      data-name="AI Regulatory Impact Simulator"
+      data-org="Placeholder Organization"
+      data-desc="Models the downstream effects of proposed AI governance frameworks on marginalized communities, informing federal comment processes."
+      data-long="When regulatory agencies solicit public comment on proposed AI rules, advocacy organizations often lack the technical capacity to model second-order effects. This simulator allows policy teams to stress-test draft frameworks against a range of community impact scenarios, generating structured analysis that can be submitted directly into federal comment processes. The tool has been used to inform comment filings with the FTC and NIST. Placeholder details to be replaced with real project information.">
+      <span class="card-tag tag-p7">Governance &amp; Policy</span>
+      <div class="card-name">AI Regulatory Impact Simulator</div>
+      <div class="card-desc">Models the downstream effects of proposed AI governance frameworks on marginalized communities, informing federal comment processes.</div>
+      <div class="card-org">Placeholder Organization</div>
+      <span class="card-expand">↗ Read more</span>
+    </div>
+
+    <div class="spotlight-card"
+      data-tag="Resilience Monitoring" data-tag-class="tag-p6"
+      data-name="Democratic Backsliding Index"
+      data-org="Placeholder Organization"
+      data-desc="Applies NLP to news corpora and legal filings across 40 countries to produce a continuously updated index of democratic health indicators."
+      data-long="Traditional democratic health indices are updated annually by expert panels — too slow to capture fast-moving threats to institutions. This index applies NLP to a continuously ingested corpus of news reporting and legal filings across 40 countries, updating scores weekly across indicators like judicial independence, press freedom, and electoral fairness. The methodology and underlying data are fully open, allowing researchers to build on or challenge the findings. Placeholder details to be replaced with real project information.">
+      <span class="card-tag tag-p6">Resilience Monitoring</span>
+      <div class="card-name">Democratic Backsliding Index</div>
+      <div class="card-desc">Applies NLP to news corpora and legal filings across 40 countries to produce a continuously updated index of democratic health indicators.</div>
+      <div class="card-org">Placeholder Organization</div>
+      <span class="card-expand">↗ Read more</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modal">
+    <div class="modal-photo" id="modalPhoto">
+      <span class="modal-photo-placeholder">Photo placeholder</span>
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-meta">
+        <span class="card-tag" id="modalTag"></span>
+        <span class="modal-org" id="modalOrg"></span>
+      </div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-divider"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 · Hannah Waller · <a href="https://www.linkedin.com/in/hannahmwaller/" target="_blank" style="color: var(--accent); text-decoration: underline;">LinkedIn</a></p>
+  <div class="footer-right">
+    <a href="contribute.html">Comments, questions, or edits? →</a>
+  </div>
+</footer>
+
+<script>
+  const backdrop = document.getElementById('modalBackdrop');
+  const modalTag = document.getElementById('modalTag');
+  const modalOrg = document.getElementById('modalOrg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+
+  document.querySelectorAll('.spotlight-card').forEach(card => {
+    card.addEventListener('click', () => {
+      modalTag.textContent = card.dataset.tag;
+      modalTag.className = 'card-tag ' + card.dataset.tagClass;
+      modalOrg.textContent = card.dataset.org;
+      modalTitle.textContent = card.dataset.name;
+      modalDesc.textContent = card.dataset.long;
+      backdrop.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeModal() {
+    backdrop.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+
+</body>
+</html>

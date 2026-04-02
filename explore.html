@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #FAFAF7; color: #1a1a18; }
+  :root { --accent: #2e7d65; --accent-light: #e6f3ee; --accent-mid: #c2dfd5; --accent-dark: #1f5446; }
+
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; height: 56px; background: #FAFAF7; border-bottom: 0.5px solid #deded8; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; color: #1a1a18; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 13px; color: #888; text-decoration: none; }
+  .nav-links a:hover { color: #1a1a18; }
+  .nav-links a.active { color: #1a1a18; font-weight: 500; }
+
+  .page-header { padding: 2.5rem 3rem 2rem; max-width: 1600px; margin: 0 auto; }
+  .page-header h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300; line-height: 1.2; color: #1a1a18; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .page-header h1 strong { font-weight: 600; }
+  .page-header p { font-size: 0.95rem; color: #555; line-height: 1.75; }
+
+  .section-divider { height: 0.5px; background: #deded8; margin: 0 3rem; }
+
+  /* Filter area */
+  .filter-wrap { padding: 1.5rem 3rem 0; max-width: 1600px; margin: 0 auto; }
+
+  .filter-row { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .filter-row-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #555; font-weight: 600; white-space: nowrap; margin-right: 0.25rem; flex-shrink: 0; }
+
+  .pill { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 0.35rem 1rem; border-radius: 20px; border: 1px solid transparent; cursor: pointer; transition: all 0.15s ease; line-height: 1; }
+
+  /* Neutral pill (All / AI use) */
+  .pill-neutral            { background: #efefea; color: #555; border-color: #efefea; }
+  .pill-neutral:hover      { background: #e4e4de; border-color: #e4e4de; }
+  .pill-neutral.active     { background: #1a1a18; color: #FAFAF7; border-color: #1a1a18; }
+
+  /* Pillar pills — resting state uses pastel bg */
+  .pill-p1            { background: #e8f5f1; color: #1a5c4a; border-color: #c8ede4; }
+  .pill-p1:hover      { background: #d0ede5; }
+  .pill-p1.active     { background: #1a5c4a; color: white; border-color: #1a5c4a; }
+
+  .pill-p2            { background: #ede8f7; color: #3d2a70; border-color: #d8cef0; }
+  .pill-p2:hover      { background: #e0d8f0; }
+  .pill-p2.active     { background: #3d2a70; color: white; border-color: #3d2a70; }
+
+  .pill-p3            { background: #fdf0e8; color: #7a3a1a; border-color: #f8d8c0; }
+  .pill-p3:hover      { background: #f5e4d4; }
+  .pill-p3.active     { background: #7a3a1a; color: white; border-color: #7a3a1a; }
+
+  .pill-p4            { background: #e8f0f7; color: #1a3a70; border-color: #c8d8f0; }
+  .pill-p4:hover      { background: #d8e4f0; }
+  .pill-p4.active     { background: #1a3a70; color: white; border-color: #1a3a70; }
+
+  .pill-p5            { background: #eef7e8; color: #2a5a1a; border-color: #cceacc; }
+  .pill-p5:hover      { background: #dff0d8; }
+  .pill-p5.active     { background: #2a5a1a; color: white; border-color: #2a5a1a; }
+
+  .pill-p6            { background: #fdf5e4; color: #7a5010; border-color: #f8e8b8; }
+  .pill-p6:hover      { background: #f5ecd0; }
+  .pill-p6.active     { background: #7a5010; color: white; border-color: #7a5010; }
+
+  .pill-p7            { background: #f5e8f0; color: #5a1a42; border-color: #ecd0e4; }
+  .pill-p7:hover      { background: #edd8e8; }
+  .pill-p7.active     { background: #5a1a42; color: white; border-color: #5a1a42; }
+
+  .filter-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+  .filter-count { font-size: 13px; color: #aaa; }
+  .filter-count span { color: #1a1a18; font-weight: 600; font-size: 15px; }
+  .filter-note { font-size: 12px; color: #888; }
+
+  /* Table */
+  .table-wrap { padding: 0 2rem 4rem; max-width: 1600px; margin: 0 auto; overflow-x: auto; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead tr { border-bottom: 1.5px solid #deded8; }
+  th { text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #555; padding: 0.75rem 0.9rem; white-space: nowrap; cursor: pointer; user-select: none; position: relative; }
+  th:hover { color: #1a1a18; }
+  th .th-icons { display: inline-flex; align-items: center; gap: 2px; margin-left: 4px; vertical-align: middle; }
+  th .sort-arrow { font-size: 15px; opacity: 0.5; line-height: 1; }
+  th.sort-active .sort-arrow { opacity: 1; color: var(--accent); }
+  th .filter-icon { font-size: 14px; opacity: 0.45; cursor: pointer; line-height: 1; padding: 0 2px; border-radius: 3px; }
+  th .filter-icon:hover { opacity: 0.7; background: #efefea; }
+  th .filter-icon.filter-active { opacity: 1; color: var(--accent); }
+
+  .col-dropdown { position: absolute; top: 100%; left: 0; background: white; border: 1px solid #deded8; border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); z-index: 200; min-width: 160px; padding: 0.4rem 0; display: none; }
+  .col-dropdown.open { display: block; }
+  .col-dropdown button { display: block; width: 100%; text-align: left; font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 0.45rem 1rem; border: none; background: none; cursor: pointer; color: #555; }
+  .col-dropdown button:hover { background: #f4f4f0; color: #1a1a18; }
+  .col-dropdown button.dd-active { color: var(--accent); font-weight: 600; }
+
+  tbody tr { transition: background 0.1s ease; }
+  tbody tr td { padding: 0.8rem 0.9rem; border-bottom: 0.5px solid rgba(0,0,0,0.05); vertical-align: top; line-height: 1.55; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* Left-accent bar via box-shadow on first cell */
+  tbody tr td:first-child { position: relative; }
+
+  /* Banded rows */
+  tbody tr:nth-child(even) td { background: #f4f4f0; }
+  tbody tr:hover td { background: #eaeae4; }
+
+  td.col-org { font-weight: 600; color: #1a1a18; min-width: 160px; max-width: 240px; }
+  td.col-org a { color: #1a1a18; text-decoration: none; border-bottom: 1px solid #deded8; }
+  td.col-org a:hover { border-bottom-color: #1a1a18; }
+  td.col-website { white-space: nowrap; }
+  td.col-website a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  td.col-website a:hover { text-decoration: underline; }
+  td.col-desc { color: #555; min-width: 340px; max-width: 500px; }
+  td.col-projects { color: #555; max-width: 150px; }
+  td.col-projects a { color: var(--accent); text-decoration: underline; font-weight: 500; }
+  td.col-ein { color: #555; font-variant-numeric: tabular-nums; white-space: nowrap; max-width: 100px; }
+  td.col-legal { color: #666; max-width: 110px; }
+  td.col-actor { color: #666; white-space: nowrap; }
+  td.col-category { min-width: 180px; max-width: 210px; }
+
+  .cell-tag { display: inline-block; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 3px; white-space: normal; margin-bottom: 2px; line-height: 1.4; }
+  .tag-p1 { background: #c8ede4; color: #1a5c4a; }
+  .tag-p2 { background: #d8cef0; color: #3d2a70; }
+  .tag-p3 { background: #f8d8c0; color: #7a3a1a; }
+  .tag-p4 { background: #c8d8f0; color: #1a3a70; }
+  .tag-p5 { background: #cceacc; color: #2a5a1a; }
+  .tag-p6 { background: #f8e8b8; color: #7a5010; }
+  .tag-p7 { background: #ecd0e4; color: #5a1a42; }
+  .tag-actor { background: #e8e8e4; color: #444; }
+  .tag-ai-tool    { background: #cce5ff; color: #004085; }
+  .tag-ai-subject { background: #f8d8c0; color: #7a3a1a; }
+  .tag-ai-both    { background: #d4edda; color: #155724; }
+  .tag-ai-neither { background: #e8e8e4; color: #555; }
+  .tag-legal-c3  { background: #d4edda; color: #155724; }
+  .tag-legal-dual { background: #d1ecf1; color: #0c5460; }
+  .tag-legal-c4  { background: #cce5ff; color: #004085; }
+  .tag-legal-fp  { background: #fff3cd; color: #856404; }
+  .tag-legal-gov { background: #d6d8db; color: #383d41; }
+  .tag-legal-prog { background: #e2d9f3; color: #3d2a70; }
+  .tag-legal-other { background: #f0efea; color: #666; }
+
+  .legal-wrap { position: relative; display: inline-block; }
+  .legal-wrap.has-details .cell-tag { border-bottom: 1.5px dotted currentColor; cursor: pointer; }
+  .legal-detail { display: none; position: absolute; bottom: calc(100% + 6px); left: 0; background: #1a1a18; color: #f5f5f0; font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: 0; line-height: 1.5; padding: 0.5rem 0.75rem; border-radius: 5px; min-width: 220px; max-width: 320px; z-index: 150; box-shadow: 0 4px 12px rgba(0,0,0,0.15); white-space: normal; }
+  .legal-detail::after { content: ''; position: absolute; top: 100%; left: 16px; border: 5px solid transparent; border-top-color: #1a1a18; }
+  .legal-wrap.open .legal-detail { display: block; }
+  .legal-wrap.has-details:hover .legal-detail { display: block; }
+
+  .empty-state { text-align: center; padding: 4rem 0; color: #bbb; font-size: 13px; }
+
+  footer { padding: 1.75rem 3rem; border-top: 0.5px solid #deded8; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: #FAFAF7; }
+  footer p { font-size: 13px; color: var(--accent); font-weight: 500; }
+  .footer-right a { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .footer-right a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">AI for Democracy</span>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="pillars.html">Pillars</a>
+    <a href="project-spotlight.html">Project Spotlight</a>
+    <a href="#" class="active">Explore Data</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="contribute.html">Contribute</a>
+    <a href="learn-more.html">Learn More</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>Explore the <strong>data</strong></h1>
+  <p>Browse organizations working in democratic resilience in the United States. This is a living resource, not yet exhaustive — read the methodology or contribute feedback.</p>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="filter-wrap">
+  <div class="filter-row">
+    <span class="filter-row-label">Function</span>
+    <button class="pill pill-neutral active" data-filter="category" data-value="">All</button>
+    <button class="pill pill-p1" data-filter="category" data-value="civic participation & deliberation">🗳 Civic participation</button>
+    <button class="pill pill-p2" data-filter="category" data-value="election integrity">🛡 Election integrity</button>
+    <button class="pill pill-p3" data-filter="category" data-value="accountability & transparency">🔎 Accountability</button>
+    <button class="pill pill-p4" data-filter="category" data-value="information environment & epistemics">📡 Information environment</button>
+    <button class="pill pill-p5" data-filter="category" data-value="civil society capacity">🌱 Civil society</button>
+    <button class="pill pill-p6" data-filter="category" data-value="democratic resilience monitoring">📊 Resilience monitoring</button>
+    <button class="pill pill-p7" data-filter="category" data-value="governance & policy">⚖️ Governance &amp; policy</button>
+  </div>
+  <div class="filter-meta">
+    <p class="filter-note">Data loads from a live Google Sheet. Check back for updates.</p>
+    <div class="filter-count"><span id="rowCount">0</span> organizations</div>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th data-sort="0">Actor <span class="th-icons"><span class="sort-arrow">↕</span></span></th>
+        <th data-sort="4">Description <span class="th-icons"><span class="sort-arrow">↕</span></span></th>
+        <th data-sort="3">Democratic Function <span class="th-icons"><span class="sort-arrow">↕</span></span></th>
+        <th data-sort="2">Actor Type <span class="th-icons"><span class="sort-arrow">↕</span></span><span class="filter-icon" data-dropdown="actor">⏷</span>
+          <div class="col-dropdown" id="dd-actor">
+            <button class="dd-active" data-filter="actor" data-value="">All</button>
+            <button data-filter="actor" data-value="organization">Organization</button>
+            <button data-filter="actor" data-value="coalition">Coalition</button>
+            <button data-filter="actor" data-value="academia">Academia</button>
+            <button data-filter="actor" data-value="project">Project</button>
+          </div>
+        </th>
+        <th data-sort="5">Notable Projects <span class="th-icons"><span class="sort-arrow">↕</span></span></th>
+        <th data-sort="7">AI Use <span class="th-icons"><span class="sort-arrow">↕</span></span><span class="filter-icon" data-dropdown="ai">⏷</span>
+          <div class="col-dropdown" id="dd-ai">
+            <button class="dd-active" data-filter="ai" data-value="">All</button>
+            <button data-filter="ai" data-value="tool">Tool</button>
+            <button data-filter="ai" data-value="subject">Subject</button>
+            <button data-filter="ai" data-value="both">Both</button>
+            <button data-filter="ai" data-value="neither">Neither</button>
+          </div>
+        </th>
+        <th data-sort="8" style="white-space:normal; min-width:90px;">Legal Structure <span class="th-icons"><span class="sort-arrow">↕</span></span><span class="filter-icon" data-dropdown="legal">⏷</span>
+          <div class="col-dropdown" id="dd-legal">
+            <button class="dd-active" data-filter="legal" data-value="">All</button>
+            <button data-filter="legal" data-value="501(c)(3)">501(c)(3)</button>
+            <button data-filter="legal" data-value="501(c)(3) and 501(c)(4)">501(c)(3) and 501(c)(4)</button>
+            <button data-filter="legal" data-value="for-profit">For-profit</button>
+            <button data-filter="legal" data-value="government">Government</button>
+            <button data-filter="legal" data-value="program within">Program within a 501(c)(3)</button>
+          </div>
+        </th>
+        <th data-sort="9">EIN <span class="th-icons"><span class="sort-arrow">↕</span></span></th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <tr><td colspan="8" class="empty-state">No data loaded yet.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <p>© 2026 · Hannah Waller · <a href="https://www.linkedin.com/in/hannahmwaller/" target="_blank" style="color: var(--accent); text-decoration: underline;">LinkedIn</a></p>
+  <div class="footer-right">
+    <a href="contribute.html">Comments, questions, or edits? →</a>
+  </div>
+</footer>
+
+<script>
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJVunO_GBT-aRgi7gU2YeIdC1sPa4ZqYNZWS0_H6O9W3wsx3i8xLzS1sTda4w2_ZTQLvcQA7u4ryC6/pub?gid=1389205839&single=true&output=csv';
+
+const PILLAR_MAP = [
+  { key: 'civic participation',          cls: 'p1', rowCls: 'row-p1' },
+  { key: 'deliberation',                 cls: 'p1', rowCls: 'row-p1' },
+  { key: 'election integrity',           cls: 'p2', rowCls: 'row-p2' },
+  { key: 'accountability',               cls: 'p3', rowCls: 'row-p3' },
+  { key: 'transparency',                 cls: 'p3', rowCls: 'row-p3' },
+  { key: 'information environment',      cls: 'p4', rowCls: 'row-p4' },
+  { key: 'epistemics',                   cls: 'p4', rowCls: 'row-p4' },
+  { key: 'civil society',                cls: 'p5', rowCls: 'row-p5' },
+  { key: 'resilience monitoring',        cls: 'p6', rowCls: 'row-p6' },
+  { key: 'governance',                   cls: 'p7', rowCls: 'row-p7' },
+  { key: 'policy',                       cls: 'p7', rowCls: 'row-p7' },
+];
+
+function getPillarInfo(category) {
+  if (!category) return { cls: '', rowCls: '' };
+  const lower = category.toLowerCase();
+  for (const p of PILLAR_MAP) {
+    if (lower.includes(p.key)) return p;
+  }
+  return { cls: '', rowCls: '' };
+}
+
+function getLegalTagClass(legal) {
+  const l = legal.toLowerCase();
+  if (l.includes('501(c)(3) and 501(c)(4)')) return 'tag-legal-dual';
+  if (l.includes('501(c)(3)')) return 'tag-legal-c3';
+  if (l.includes('501(c)(4)')) return 'tag-legal-c4';
+  if (l.includes('501(c)(6)')) return 'tag-legal-c4';
+  if (l.includes('for-profit')) return 'tag-legal-fp';
+  if (l.includes('government')) return 'tag-legal-gov';
+  if (l.includes('program within')) return 'tag-legal-prog';
+  return 'tag-legal-other';
+}
+
+function getAiTagClass(aiUse) {
+  const a = aiUse.toLowerCase();
+  if (a === 'both') return 'tag-ai-both';
+  if (a === 'tool') return 'tag-ai-tool';
+  if (a === 'subject') return 'tag-ai-subject';
+  return 'tag-ai-neither';
+}
+
+function parseCSV(text) {
+  const rows = [];
+  const cols = [];
+  let cur = '', inQuote = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') {
+      if (inQuote && text[i + 1] === '"') { cur += '"'; i++; }
+      else { inQuote = !inQuote; }
+    } else if (ch === ',' && !inQuote) {
+      cols.push(cur.trim()); cur = '';
+    } else if ((ch === '\n' || ch === '\r') && !inQuote) {
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      cols.push(cur.trim()); cur = '';
+      if (cols.some(c => c !== '')) rows.push([...cols]);
+      cols.length = 0;
+    } else {
+      cur += ch;
+    }
+  }
+  cols.push(cur.trim());
+  if (cols.some(c => c !== '')) rows.push(cols);
+  return rows;
+}
+
+const COL = { ORG: 0, WEBSITE: 1, ACTOR: 2, CATEGORY: 3, DESC: 4, PROJECTS: 5, PROJECT_URL: 6, AI_USE: 7, LEGAL: 8, EIN: 9, LEGAL_DETAILS: 10 };
+
+let allRows = [];
+let activeCategory = '';
+let activeActor = '';
+let activeAI = '';
+let activeLegal = '';
+let sortCol = null;
+let sortAsc = true;
+
+function renderTable(rows) {
+  document.getElementById('rowCount').textContent = rows.length;
+  const tbody = document.getElementById('tableBody');
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No matching organizations.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map(row => {
+    const category = row[COL.CATEGORY] || '';
+    const { cls, rowCls } = getPillarInfo(category);
+
+    const website = row[COL.WEBSITE] || '';
+
+    const categoryTags = category
+      ? category.split(',').map(c => {
+          const trimmed = c.trim();
+          const info = getPillarInfo(trimmed);
+          return `<span class="cell-tag tag-${info.cls}">${escapeHtml(trimmed)}</span>`;
+        }).join(' ')
+      : '—';
+
+    const aiUse = row[COL.AI_USE] || '';
+    const aiCell = aiUse ? `<span class="cell-tag ${getAiTagClass(aiUse)}">${escapeHtml(aiUse)}</span>` : '—';
+
+    const orgName = escapeHtml(row[COL.ORG] || '');
+    const orgCell = website ? `<a href="${escapeAttr(website)}" target="_blank" rel="noopener">${orgName}</a>` : orgName;
+
+    const projectsRaw = row[COL.PROJECTS] || '';
+    const projectUrlsRaw = row[COL.PROJECT_URL] || '';
+    const projectNames = projectsRaw ? projectsRaw.split(';').map(s => s.trim()) : [];
+    const projectUrls = projectUrlsRaw ? projectUrlsRaw.split(';').map(s => s.trim()) : [];
+    const projectsCell = projectNames.length
+      ? projectNames.map((name, i) => {
+          const url = projectUrls[i] || '';
+          return url
+            ? `<a href="${escapeAttr(url)}" target="_blank" rel="noopener">${escapeHtml(name)}</a>`
+            : escapeHtml(name);
+        }).join('; ')
+      : '—';
+
+    const legal = row[COL.LEGAL] || '';
+    const legalDetails = row[COL.LEGAL_DETAILS] || '';
+    let legalCell = '—';
+    if (legal) {
+      const hasDetails = legalDetails.trim() !== '';
+      const detailHtml = hasDetails ? `<div class="legal-detail">${escapeHtml(legalDetails)}</div>` : '';
+      legalCell = `<span class="legal-wrap${hasDetails ? ' has-details' : ''}"><span class="cell-tag ${getLegalTagClass(legal)}">${escapeHtml(legal)}</span>${detailHtml}</span>`;
+    }
+
+    return `<tr class="${rowCls}">
+      <td class="col-org">${orgCell}</td>
+      <td class="col-desc">${escapeHtml(row[COL.DESC] || '')}</td>
+      <td class="col-category">${categoryTags}</td>
+      <td class="col-actor">${row[COL.ACTOR] ? `<span class="cell-tag tag-actor">${escapeHtml(row[COL.ACTOR])}</span>` : '—'}</td>
+      <td class="col-projects">${projectsCell}</td>
+      <td>${aiCell}</td>
+      <td class="col-legal">${legalCell}</td>
+      <td class="col-ein">${escapeHtml(row[COL.EIN] || '')}</td>
+    </tr>`;
+  }).join('');
+}
+
+function applyFilters() {
+  const filtered = allRows.filter(row => {
+    const rowCat   = (row[COL.CATEGORY] || '').toLowerCase();
+    const rowActor = (row[COL.ACTOR]    || '').toLowerCase();
+    const rowAI    = (row[COL.AI_USE]   || '').toLowerCase();
+    const rowLegal = (row[COL.LEGAL]    || '').toLowerCase();
+    return (!activeCategory || rowCat.includes(activeCategory))
+        && (!activeActor    || rowActor === activeActor)
+        && (!activeAI       || rowAI    === activeAI)
+        && (!activeLegal    || rowLegal.includes(activeLegal));
+  });
+  if (sortCol !== null) {
+    filtered.sort((a, b) => {
+      const va = (a[sortCol] || '').toLowerCase();
+      const vb = (b[sortCol] || '').toLowerCase();
+      return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+  }
+  renderTable(filtered);
+}
+
+// Pill click handling (top Function row)
+document.querySelectorAll('.pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const filter = pill.dataset.filter;
+    document.querySelectorAll(`.pill[data-filter="${filter}"]`).forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    if (filter === 'category') {
+      activeCategory = pill.dataset.value;
+      if (!activeCategory) {
+        sortCol = 0;
+        sortAsc = true;
+        document.querySelectorAll('th[data-sort]').forEach(h => {
+          h.classList.remove('sort-active');
+          h.querySelector('.sort-arrow').textContent = '↕';
+        });
+      }
+    }
+    applyFilters();
+  });
+});
+
+// Dropdown filter toggle
+document.querySelectorAll('.filter-icon').forEach(icon => {
+  icon.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const ddId = 'dd-' + icon.dataset.dropdown;
+    const dd = document.getElementById(ddId);
+    document.querySelectorAll('.col-dropdown.open').forEach(d => { if (d !== dd) d.classList.remove('open'); });
+    dd.classList.toggle('open');
+  });
+});
+
+// Dropdown filter selection
+document.querySelectorAll('.col-dropdown button').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const filter = btn.dataset.filter;
+    const dd = btn.closest('.col-dropdown');
+    dd.querySelectorAll('button').forEach(b => b.classList.remove('dd-active'));
+    btn.classList.add('dd-active');
+    dd.classList.remove('open');
+    const icon = dd.parentElement.querySelector('.filter-icon');
+    if (btn.dataset.value) { icon.classList.add('filter-active'); }
+    else { icon.classList.remove('filter-active'); }
+    if (filter === 'actor') activeActor = btn.dataset.value;
+    if (filter === 'ai')    activeAI    = btn.dataset.value;
+    if (filter === 'legal') activeLegal = btn.dataset.value;
+    applyFilters();
+  });
+});
+
+// Close dropdowns and legal popups when clicking elsewhere
+document.addEventListener('click', (e) => {
+  document.querySelectorAll('.col-dropdown.open').forEach(d => d.classList.remove('open'));
+  if (!e.target.closest('.legal-wrap')) {
+    document.querySelectorAll('.legal-wrap.open').forEach(w => w.classList.remove('open'));
+  }
+});
+
+// Legal detail popup toggle (delegated since rows are dynamic)
+document.getElementById('tableBody').addEventListener('click', (e) => {
+  const wrap = e.target.closest('.legal-wrap.has-details');
+  if (!wrap) return;
+  e.stopPropagation();
+  const wasOpen = wrap.classList.contains('open');
+  document.querySelectorAll('.legal-wrap.open').forEach(w => w.classList.remove('open'));
+  if (!wasOpen) wrap.classList.add('open');
+});
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escapeAttr(str) {
+  return str.replace(/"/g,'&quot;');
+}
+
+// Column sort handling
+document.querySelectorAll('th[data-sort]').forEach(th => {
+  th.addEventListener('click', (e) => {
+    if (e.target.closest('.filter-icon') || e.target.closest('.col-dropdown')) return;
+    const col = parseInt(th.dataset.sort);
+    if (sortCol === col) { sortAsc = !sortAsc; }
+    else { sortCol = col; sortAsc = true; }
+    document.querySelectorAll('th[data-sort]').forEach(h => {
+      h.classList.remove('sort-active');
+      h.querySelector('.sort-arrow').textContent = '↕';
+    });
+    th.classList.add('sort-active');
+    th.querySelector('.sort-arrow').textContent = sortAsc ? '↑' : '↓';
+    applyFilters();
+  });
+});
+
+async function loadData() {
+  if (!SHEET_CSV_URL) return;
+  try {
+    const res = await fetch(SHEET_CSV_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    allRows = parseCSV(text).slice(1);
+    applyFilters();
+  } catch (e) {
+    document.getElementById('tableBody').innerHTML =
+      `<tr><td colspan="8" class="empty-state">Could not load data. Check that the sheet is published as CSV.</td></tr>`;
+  }
+}
+
+loadData();
+</script>
+
+</body>
+</html>

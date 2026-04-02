@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #FAFAF7; color: #1a1a18; }
+  :root { --accent: #2e7d65; --accent-light: #e6f3ee; --accent-mid: #c2dfd5; --accent-dark: #1f5446; }
+
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; height: 56px; background: #FAFAF7; border-bottom: 0.5px solid #deded8; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; color: #1a1a18; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 13px; color: #888; text-decoration: none; }
+  .nav-links a:hover { color: #1a1a18; }
+  .nav-links a.active { color: #1a1a18; font-weight: 500; }
+
+  .page-header { padding: 2.5rem 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .page-header h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300; line-height: 1.2; color: #1a1a18; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .page-header h1 strong { font-weight: 600; }
+  .page-header p { font-size: 0.95rem; color: #555; line-height: 1.75; }
+
+  .section-divider { height: 0.5px; background: #deded8; margin: 0 3rem; }
+
+  .content { max-width: 1100px; margin: 0 auto; padding: 0 3rem 5rem; }
+
+  .resource-section { padding-top: 3rem; padding-bottom: 1.5rem; }
+  .resource-section + .resource-section { border-top: 0.5px solid #deded8; margin-top: 0; padding-top: 2rem; }
+
+  .section-label { font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 1.5rem; }
+
+  .reading-list { display: flex; flex-direction: column; }
+
+  .reading-entry { padding: 1.25rem 0; border-bottom: 0.5px solid #deded8; }
+  .reading-entry:first-child { border-top: 0.5px solid #deded8; }
+  .reading-entry:last-child { border-bottom: none; }
+
+  .reading-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .reading-title a { color: var(--accent); text-decoration: none; }
+  .reading-title a:hover { text-decoration: underline; }
+
+  .reading-meta { font-size: 12px; color: #aaa; margin-bottom: 0.5rem; }
+  .reading-meta span + span::before { content: ' · '; }
+
+  .reading-desc { font-size: 0.9rem; color: #555; line-height: 1.75; }
+
+  footer { padding: 1.75rem 3rem; border-top: 0.5px solid #deded8; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: #FAFAF7; }
+  footer p { font-size: 13px; color: var(--accent); font-weight: 500; }
+  .footer-right a { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .footer-right a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">AI for Democracy</span>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="pillars.html">Pillars</a>
+    <a href="project-spotlight.html">Project Spotlight</a>
+    <a href="explore.html">Explore Data</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="contribute.html">Contribute</a>
+    <a href="#" class="active">Learn More</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1><strong>Learn More</strong></h1>
+  <p>Resources for those who want to go deeper — on AI and democracy, and on putting AI to work for civil society.</p>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="content">
+
+  <div class="resource-section">
+    <p class="section-label">Relevant publications</p>
+    <div class="reading-list">
+
+      <div class="reading-entry">
+        <div class="reading-title"><a href="https://carnegieendowment.org/research/2026/01/ai-and-democracy-mapping-the-intersections" target="_blank">AI and Democracy: Mapping the Intersections</a></div>
+        <div class="reading-meta"><span>Rachel George &amp; Ian Klaus</span><span>Carnegie Endowment for International Peace</span><span>January 2026</span></div>
+        <div class="reading-desc">Maps AI's impact across four domains — elections, citizen deliberation, government services, and social cohesion — arguing that progress requires bridging the divides between policymakers, technologists, and civil society actors.</div>
+      </div>
+
+      <div class="reading-entry">
+        <div class="reading-title"><a href="https://www.packard.org/insights/publication/ai-and-democracy-perspectives-from-an-emerging-field/" target="_blank">AI and Democracy: Perspectives from an Emerging Field</a></div>
+        <div class="reading-meta"><span>Christine Costa</span><span>David and Lucile Packard Foundation</span><span>March 2026</span></div>
+        <div class="reading-desc">Drawing on insights from over 130 organizations, frames AI as "an accelerant, amplifying both strengths and weaknesses across existing systems" — with particular guidance aimed at funders and organizational leaders navigating rapid technological change.</div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="resource-section">
+    <p class="section-label">Resources for civil society</p>
+    <div class="reading-list">
+
+      <div class="reading-entry">
+        <div class="reading-title"><a href="https://learn.mcgovern.org/" target="_blank">PJMF Learning Hub</a></div>
+        <div class="reading-meta"><span>Patrick J. McGovern Foundation</span></div>
+        <div class="reading-desc">A curated resource hub for nonprofits at any stage of their AI journey, organized into four phases — Curiosity, Exploration, Adoption, and Impact — with vetted external resources and hands-on learning opportunities across topics like AI 101, social responsibility, data readiness, build vs. buy decisions, and funding AI innovation. Built on the belief that no organization should have to figure out AI transformation alone, the Hub is designed to be a living resource shaped by community feedback.</div>
+      </div>
+
+      <div class="reading-entry">
+        <div class="reading-title"><a href="https://thegovlab.org/" target="_blank">The GovLab</a></div>
+        <div class="reading-meta"><span>NYU GovLab</span></div>
+        <div class="reading-desc">A research and action center at NYU focused on improving governance through technology, running initiatives including the ReBoot blog and InnovateUS on responsible data use and public sector innovation. Also home to <a href="https://rebootdemocracy.ai/" target="_blank" style="color: var(--accent);">Reboot Democracy</a>, which publishes research on how AI can strengthen democratic participation, governance, and elections.</div>
+      </div>
+
+      <div class="reading-entry">
+        <div class="reading-title"><a href="https://www.linkedin.com/learning/paths/ai-for-nonprofits-professional-certificate-by-microsoft-elevate-linkedin-and-nethope" target="_blank">AI for Nonprofits Professional Certificate</a></div>
+        <div class="reading-meta"><span>Microsoft Elevate, LinkedIn &amp; NetHope</span><span>March 2026</span></div>
+        <div class="reading-desc">A two-course professional certificate (~2 hours) teaching nonprofits how to implement AI tools responsibly, covering practical integration, change management, and data governance aligned with nonprofit values.</div>
+      </div>
+
+      <div class="reading-entry">
+        <div class="reading-title"><a href="https://www.techsoup.org/" target="_blank">TechSoup</a></div>
+        <div class="reading-meta"><span>TechSoup</span></div>
+        <div class="reading-desc">A nonprofit technology platform offering discounted or donated software, hardware, and services to nonprofits, charities, and libraries — including a membership program with free options.</div>
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 · Hannah Waller · <a href="https://www.linkedin.com/in/hannahmwaller/" target="_blank" style="color: var(--accent); text-decoration: underline;">LinkedIn</a></p>
+  <div class="footer-right">
+    <a href="contribute.html">Comments, questions, or edits? →</a>
+  </div>
+</footer>
+
+</body>
+</html>

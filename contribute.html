@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #FAFAF7; color: #1a1a18; }
+  :root { --accent: #2e7d65; --accent-light: #e6f3ee; --accent-mid: #c2dfd5; --accent-dark: #1f5446; }
+
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; height: 56px; background: #FAFAF7; border-bottom: 0.5px solid #deded8; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; color: #1a1a18; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 13px; color: #888; text-decoration: none; }
+  .nav-links a:hover { color: #1a1a18; }
+  .nav-links a.active { color: #1a1a18; font-weight: 500; }
+
+  .page-header { padding: 2.5rem 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .page-header h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300; line-height: 1.2; color: #1a1a18; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .page-header h1 strong { font-weight: 600; }
+  .page-header p { font-size: 0.95rem; color: #555; line-height: 1.75; }
+
+  .section-divider { height: 0.5px; background: #deded8; margin: 0 3rem; }
+
+  .content { max-width: 1100px; margin: 0 auto; padding: 0 3rem 5rem; }
+
+  .contribute-section { padding-top: 3rem; }
+  .contribute-section + .contribute-section { border-top: 0.5px solid #deded8; margin-top: 3rem; }
+
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+  .section-title { font-size: 1.35rem; font-weight: 500; color: #1a1a18; margin-bottom: 1.25rem; line-height: 1.3; }
+
+  .prose p { font-size: 0.95rem; color: #444; line-height: 1.85; }
+  .prose p + p { margin-top: 1rem; }
+
+  /* Form placeholder */
+  .form-placeholder { background: #f3f3ee; border: 0.5px solid #deded8; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 420px; margin-bottom: 1rem; }
+  .form-placeholder-text { font-size: 13px; color: #bbb; letter-spacing: 0.06em; }
+
+  .form-footnote { font-size: 12px; color: #aaa; line-height: 1.7; }
+  .form-footnote a { color: var(--accent); text-decoration: none; }
+  .form-footnote a:hover { text-decoration: underline; }
+
+  footer { padding: 1.75rem 3rem; border-top: 0.5px solid #deded8; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: #FAFAF7; }
+  footer p { font-size: 13px; color: var(--accent); font-weight: 500; }
+  .footer-right a { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .footer-right a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">AI for Democracy</span>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="pillars.html">Pillars</a>
+    <a href="project-spotlight.html">Project Spotlight</a>
+    <a href="explore.html">Explore Data</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="#" class="active">Contribute</a>
+    <a href="learn-more.html">Learn More</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1><strong>Contribute</strong></h1>
+  <p>Help keep this landscape current — suggest a missing organization or flag an error.</p>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="content">
+
+  <div class="contribute-section">
+    <h2 class="section-title" style="color: var(--accent);">About this resource</h2>
+    <div class="prose">
+      <p>This landscape is intended to grow over time. It was compiled during a Winter Fellowship at the Centre for the Governance of AI in early 2026, and reflects the organizations and projects the author was able to identify and verify during that period — but it is not exhaustive. There are certainly organizations missing, particularly in areas like local civic infrastructure and civic technology, where the field is large and fragmented.</p>
+      <p>All submissions are reviewed before appearing in the dataset. If you're suggesting a new organization, the most helpful information to include is the organization's name, website, a brief description of its work, and which democratic function category you think it belongs in. If you're flagging an error — a miscategorization, an outdated description, or a factual mistake — please include the organization name and what you believe should be corrected. Corrections are just as welcome as additions.</p>
+    </div>
+  </div>
+
+  <div class="contribute-section">
+    <h2 class="section-title" style="color: var(--accent);">Submit feedback</h2>
+
+    <!-- REPLACE THIS DIV WITH GOOGLE FORM IFRAME EMBED CODE -->
+    <div class="form-placeholder">
+      <span class="form-placeholder-text">Google Form coming soon</span>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 · Hannah Waller · <a href="https://www.linkedin.com/in/hannahmwaller/" target="_blank" style="color: var(--accent); text-decoration: underline;">LinkedIn</a></p>
+  <div class="footer-right">
+    <a href="contribute.html">Comments, questions, or edits? →</a>
+  </div>
+</footer>
+
+</body>
+</html>
