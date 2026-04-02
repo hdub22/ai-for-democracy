@@ -61,7 +61,8 @@
   .data-preview-link:hover { text-decoration: underline; }
 
   .shuffle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 1300px; margin: 0 auto 1rem; }
-  .org-card { background: white; border: 0.5px solid #deded8; border-radius: 8px; padding: 1rem 1.1rem; transition: opacity 0.4s ease, transform 0.4s ease; }
+  .org-card { background: white; border: 0.5px solid #deded8; border-radius: 8px; padding: 1rem 1.1rem; transition: opacity 0.4s ease, transform 0.4s ease; text-decoration: none; display: block; cursor: pointer; }
+  .org-card:hover { border-color: #bbb; }
   .org-card-tag { display: inline-block; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 3px; margin-bottom: 0.6rem; }
   .org-card-name { font-size: 13px; font-weight: 600; color: #1a1a18; margin-bottom: 0.4rem; line-height: 1.3; }
   .org-card-desc { font-size: 12px; color: #666; line-height: 1.6; }
@@ -221,21 +222,27 @@
 </footer>
 
 <script>
-const orgs = [
-  { name: "Brennan Center for Justice", desc: "Researches, litigates, and advocates to defend voting rights and strengthen democratic institutions.", cat: "Election Integrity", tag: "tag-p2" },
-  { name: "Knight Foundation", desc: "Funds research, journalism, and civic technology to support informed and engaged communities.", cat: "Civil Society Capacity", tag: "tag-p5" },
-  { name: "Partnership on AI", desc: "Convenes civil society, industry, and government to develop responsible AI practices and standards.", cat: "Governance & Policy", tag: "tag-p7" },
-  { name: "Demos", desc: "Develops research and policy advocacy to build an equitable economy and a robust democracy.", cat: "Accountability & Transparency", tag: "tag-p3" },
-  { name: "Common Cause", desc: "Advocates for reforms that expand voting access, fight corruption, and hold officials accountable.", cat: "Election Integrity", tag: "tag-p2" },
-  { name: "First Draft", desc: "Trains journalists and researchers to identify and counter misinformation across information environments.", cat: "Information Environment", tag: "tag-p4" },
-  { name: "Center for Democracy & Technology", desc: "Advocates for digital rights and equitable technology policy through litigation and policy engagement.", cat: "Governance & Policy", tag: "tag-p7" },
-  { name: "Verified Voting", desc: "Advocates for voter-marked paper ballots and auditable election processes nationwide.", cat: "Election Integrity", tag: "tag-p2" },
-  { name: "Protect Democracy", desc: "Litigates, advocates, and builds coalitions to prevent the dangerous concentration of political power.", cat: "Accountability & Transparency", tag: "tag-p3" },
-  { name: "MIT Election Lab", desc: "Conducts research on election administration to improve the practice and study of U.S. elections.", cat: "Resilience Monitoring", tag: "tag-p6" },
-  { name: "National Conference on Citizenship", desc: "Measures and builds civic health across communities through data, research, and civic programming.", cat: "Civic Participation", tag: "tag-p1" },
-  { name: "Poynter Institute", desc: "Trains journalists and runs fact-checking programs to strengthen press standards and media literacy.", cat: "Information Environment", tag: "tag-p4" },
+const PILLAR_TAGS = [
+  { key: 'civic participation', tag: 'tag-p1' },
+  { key: 'deliberation',       tag: 'tag-p1' },
+  { key: 'election integrity', tag: 'tag-p2' },
+  { key: 'accountability',     tag: 'tag-p3' },
+  { key: 'transparency',       tag: 'tag-p3' },
+  { key: 'information environment', tag: 'tag-p4' },
+  { key: 'epistemics',         tag: 'tag-p4' },
+  { key: 'civil society',      tag: 'tag-p5' },
+  { key: 'resilience monitoring', tag: 'tag-p6' },
+  { key: 'governance',         tag: 'tag-p7' },
+  { key: 'policy',             tag: 'tag-p7' },
 ];
 
+function getPillarTag(cat) {
+  const lower = cat.toLowerCase();
+  for (const p of PILLAR_TAGS) { if (lower.includes(p.key)) return p.tag; }
+  return 'tag-p1';
+}
+
+let orgs = [];
 let displayed = [];
 const grid = document.getElementById('shuffleGrid');
 const COUNT = 4;
@@ -247,14 +254,15 @@ function pickRandom(exclude) {
 }
 
 function renderCard(org) {
-  return `<div class="org-card" data-name="${org.name}">
+  return `<a class="org-card" href="explore.html" data-name="${org.name}">
     <span class="org-card-tag ${org.tag}">${org.cat}</span>
     <div class="org-card-name">${org.name}</div>
     <div class="org-card-desc">${org.desc}</div>
-  </div>`;
+  </a>`;
 }
 
-function init() {
+function initShuffle() {
+  if (!orgs.length) return;
   displayed = [];
   let html = '';
   for (let i = 0; i < COUNT; i++) {
@@ -263,6 +271,7 @@ function init() {
     html += renderCard(org);
   }
   grid.innerHTML = html;
+  setInterval(swapCard, 2200);
 }
 
 function swapCard() {
@@ -278,9 +287,6 @@ function swapCard() {
     card.replaceWith(tmp.firstChild);
   }, 420);
 }
-
-init();
-setInterval(swapCard, 2200);
 
 // --- AI in Action shuffle ---
 const spotlights = [
@@ -377,6 +383,18 @@ setInterval(aiaSwap, 2800);
     if (orgCount > 0) document.getElementById('statOrgCount').textContent = orgCount;
     if (nonprofitCount > 0) document.getElementById('statNonprofitCount').textContent = nonprofitCount;
     if (projectCount > 0) document.getElementById('statProjectCount').textContent = projectCount;
+
+    orgs = dataRows.map(r => {
+      const fullCat = (r[3] || '').trim();
+      const firstCat = fullCat.split(',')[0].trim();
+      return {
+        name: (r[0] || '').trim(),
+        desc: (r[4] || '').trim(),
+        cat: firstCat,
+        tag: getPillarTag(firstCat)
+      };
+    }).filter(o => o.name && o.desc);
+    initShuffle();
   } catch(e) {}
 })();
 </script>
