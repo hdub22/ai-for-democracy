@@ -176,7 +176,7 @@
   <div class="question-block">
     <p class="question-label">Understand</p>
     <p class="question-text">Why now?</p>
-    <p class="question-body">Democratic institutions are under strain at the same moment AI is becoming infrastructure — shaping what voters see, how governments respond, and which voices get amplified. The organizations working at this intersection are doing some of the most consequential civic work of this decade. This landscape maps who they are.</p>
+    <p class="question-body">A glance at the news can answer this question. Recent data from <a href="https://www.v-dem.net/news/press-release-democratic-backsliding-reaches-western-democracies-with-us-decline-unprecedented/" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">V-Dem</a> and <a href="https://freedomhouse.org/report/freedom-world/2026/growing-shadow-autocracy" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">Freedom House</a> confirms that the U.S. is moving toward authoritarianism. For the first time in over 50 years, the U.S. lost its status as a liberal democracy in 2025. History suggests that once a democracy starts backsliding, reversing course is difficult, but not impossible. The sooner we take action, the more likely it is that liberal democracy can be restored. That's why contributing to organizations already countering this spiral is one of the fastest routes to impact.</p>
     <a class="question-cta" href="methodology.html">Read the full framing</a>
   </div>
   <div class="question-block">
@@ -196,7 +196,7 @@
   <div class="question-block">
     <p class="question-label">Contribute</p>
     <p class="question-text">Who's missing?</p>
-    <p class="question-body">This database is meant to be a living resource. If you work at or know of an organization working on democratic resilience in the U.S., particularly in ways that harness AI, please submit feedback. <em>Note: Organizations may have been excluded if they didn't meet the criteria outlined on the <a href="methodology.html" style="color: var(--accent);">methodology page</a>.</em></p>
+    <p class="question-body">This database is meant to be a living resource. If you work at or know of an organization working on democratic resilience in the U.S., particularly in ways that harness AI, please submit feedback.</p>
     <a class="question-cta" href="contribute.html">Suggest an organization</a>
   </div>
 </div>
@@ -220,6 +220,7 @@
   </div>
 </footer>
 
+<script src="spotlight-data.js"></script>
 <script>
 const PILLAR_TAGS = [
   { key: 'civic participation', tag: 'tag-p1' },
@@ -239,6 +240,15 @@ function getPillarTag(cat) {
   for (const p of PILLAR_TAGS) { if (lower.includes(p.key)) return p.tag; }
   return 'tag-p1';
 }
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+}
+
+const spotlights = (typeof SPOTLIGHT_CARDS !== 'undefined' ? SPOTLIGHT_CARDS : []).map(function (c) {
+  return { name: c.name, desc: c.desc, tag: c.tagClass, cat: c.tag, org: c.org };
+});
 
 let orgs = [];
 let displayed = [];
@@ -290,16 +300,7 @@ function swapCard() {
   }, 420);
 }
 
-// --- AI in Action shuffle ---
-const spotlights = [
-  { name: "AI-Assisted Election Audit Tool", desc: "Uses machine learning to flag statistical anomalies in reported vote tallies, supporting post-election audits at the county level.", cat: "Election Integrity", tag: "tag-p2", org: "Placeholder Organization" },
-  { name: "Synthetic Media Detection Project", desc: "Develops open-source classifiers to identify AI-generated audio and video circulating in political contexts ahead of major elections.", cat: "Information Environment", tag: "tag-p4", org: "Placeholder Organization" },
-  { name: "AI-Powered Constituent Listening", desc: "Aggregates and clusters constituent feedback at scale, helping legislative offices identify emerging concerns without losing individual voices.", cat: "Civic Participation", tag: "tag-p1", org: "Placeholder Organization" },
-  { name: "Automated Legislative Tracker", desc: "Monitors thousands of state and federal bill updates in real time, surfacing policy changes relevant to civil liberties and voting rights.", cat: "Accountability & Transparency", tag: "tag-p3", org: "Placeholder Organization" },
-  { name: "AI Regulatory Impact Simulator", desc: "Models the downstream effects of proposed AI governance frameworks on marginalized communities, informing federal comment processes.", cat: "Governance & Policy", tag: "tag-p7", org: "Placeholder Organization" },
-  { name: "Democratic Backsliding Index", desc: "Applies NLP to news corpora and legal filings across 40 countries to produce a continuously updated index of democratic health indicators.", cat: "Resilience Monitoring", tag: "tag-p6", org: "Placeholder Organization" },
-];
-
+// --- Project Spotlight shuffle (same pool as project-spotlight.html via spotlight-data.js) ---
 let aiaDisplayed = [];
 const aiaGrid = document.getElementById('aiaGrid');
 const AIA_COUNT = 3;
@@ -311,11 +312,11 @@ function aiaPickRandom(exclude) {
 }
 
 function aiaRenderCard(s) {
-  return `<div class="aia-card" data-name="${s.name}">
-    <span class="org-card-tag ${s.tag}">${s.cat}</span>
-    <div class="aia-card-name">${s.name}</div>
-    <div class="aia-card-desc">${s.desc}</div>
-    <div class="aia-card-org">${s.org}</div>
+  return `<div class="aia-card" data-name="${escapeHtml(s.name)}">
+    <span class="org-card-tag ${s.tag}">${escapeHtml(s.cat)}</span>
+    <div class="aia-card-name">${escapeHtml(s.name)}</div>
+    <div class="aia-card-desc">${escapeHtml(s.desc)}</div>
+    <div class="aia-card-org">${escapeHtml(s.org)}</div>
   </div>`;
 }
 
@@ -344,8 +345,10 @@ function aiaSwap() {
   }, 420);
 }
 
-aiaInit();
-setInterval(aiaSwap, 2800);
+if (spotlights.length) {
+  aiaInit();
+  setInterval(aiaSwap, 2800);
+}
 
 // Live stats from Google Sheet
 (async function() {
