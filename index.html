@@ -143,10 +143,10 @@
     <div class="stat-divider"></div>
     <div class="stat"><span class="stat-number" id="statProjectCount">0</span><span class="stat-label">Standout projects</span></div>
     <div class="stat-divider"></div>
-    <div class="stat"><span class="stat-number">7</span><span class="stat-label">Democratic pillars</span></div>
+    <div class="stat"><span class="stat-number">6</span><span class="stat-label">Democratic pillars</span></div>
   </div>
   <div class="cta-row">
-    <a class="btn-primary" href="pillars.html">Explore the pillars</a>
+    <a class="btn-secondary" href="pillars.html">Explore the pillars</a>
     <a class="btn-secondary" href="explore.html">Browse the full dataset</a>
     <a class="btn-secondary" href="methodology.html">About this project</a>
   </div>
@@ -182,14 +182,13 @@
   <div class="question-block">
     <p class="question-label">Explore</p>
     <p class="question-text">What makes a democracy resilient to threats?</p>
-    <p class="question-body">From election integrity to civic participation to the information environment, this landscape organizes the field into seven functional categories. Browse by pillar to see the organizations working in each space and how they're using AI.</p>
+    <p class="question-body">From election integrity to civic participation to the information environment, this landscape organizes the field into six functional categories. Browse by pillar to see the organizations working in each space and how they're using AI.</p>
     <div class="pillars-grid" style="margin: 1.25rem 0;">
       <a class="pillar-card p1" href="pillars.html#p1"><span class="pillar-icon">🗳</span><span class="pillar-name">Civic participation & deliberation</span><span class="pillar-arrow">→</span></a>
       <a class="pillar-card p2" href="pillars.html#p2"><span class="pillar-icon">🛡</span><span class="pillar-name">Election integrity</span><span class="pillar-arrow">→</span></a>
       <a class="pillar-card p3" href="pillars.html#p3"><span class="pillar-icon">🔎</span><span class="pillar-name">Accountability & transparency</span><span class="pillar-arrow">→</span></a>
       <a class="pillar-card p4" href="pillars.html#p4"><span class="pillar-icon">📡</span><span class="pillar-name">Information environment & epistemics</span><span class="pillar-arrow">→</span></a>
       <a class="pillar-card p5" href="pillars.html#p5"><span class="pillar-icon">🌱</span><span class="pillar-name">Civil society capacity</span><span class="pillar-arrow">→</span></a>
-      <a class="pillar-card p6" href="pillars.html#p6"><span class="pillar-icon">📊</span><span class="pillar-name">Democratic resilience monitoring</span><span class="pillar-arrow">→</span></a>
       <a class="pillar-card p7" href="pillars.html#p7"><span class="pillar-icon">⚖️</span><span class="pillar-name">Governance & policy</span><span class="pillar-arrow">→</span></a>
     </div>
     <a class="question-cta" href="pillars.html">Explore the pillars</a>
@@ -231,7 +230,6 @@ const PILLAR_TAGS = [
   { key: 'information environment', tag: 'tag-p4' },
   { key: 'epistemics',         tag: 'tag-p4' },
   { key: 'civil society',      tag: 'tag-p5' },
-  { key: 'resilience monitoring', tag: 'tag-p6' },
   { key: 'governance',         tag: 'tag-p7' },
   { key: 'policy',             tag: 'tag-p7' },
 ];
@@ -247,10 +245,12 @@ let displayed = [];
 const grid = document.getElementById('shuffleGrid');
 const COUNT = 4;
 
-function pickRandom(exclude) {
-  const pool = orgs.filter(o => !exclude.includes(o.name));
-  if (!pool.length) return orgs[Math.floor(Math.random() * orgs.length)];
-  return pool[Math.floor(Math.random() * pool.length)];
+function pickDiverse(exclude, excludeTags) {
+  const pool = orgs.filter(o => !exclude.includes(o.name) && !excludeTags.includes(o.tag));
+  if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
+  const fallback = orgs.filter(o => !exclude.includes(o.name));
+  if (fallback.length) return fallback[Math.floor(Math.random() * fallback.length)];
+  return orgs[Math.floor(Math.random() * orgs.length)];
 }
 
 function renderCard(org) {
@@ -266,7 +266,8 @@ function initShuffle() {
   displayed = [];
   let html = '';
   for (let i = 0; i < COUNT; i++) {
-    const org = pickRandom(displayed.map(o => o.name));
+    const usedTags = displayed.map(o => o.tag);
+    const org = pickDiverse(displayed.map(o => o.name), usedTags);
     displayed.push(org);
     html += renderCard(org);
   }
@@ -278,7 +279,8 @@ function swapCard() {
   const cards = grid.querySelectorAll('.org-card');
   const idx = Math.floor(Math.random() * cards.length);
   const card = cards[idx];
-  const newOrg = pickRandom(displayed.map(o => o.name));
+  const otherTags = displayed.filter((_, i) => i !== idx).map(o => o.tag);
+  const newOrg = pickDiverse(displayed.map(o => o.name), otherTags);
   card.classList.add('fading');
   setTimeout(() => {
     displayed[idx] = newOrg;
