@@ -40,10 +40,10 @@
 
   .section-divider { height: 0.5px; background: #deded8; margin: 0 3rem; }
 
-  .funder-band { background: var(--accent-light); border-top: 1px solid var(--accent-mid); border-bottom: 1px solid var(--accent-mid); padding: 1rem 3rem; }
-  .funder-band-inner { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
-  .funder-band-label { font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); font-weight: 600; flex-shrink: 0; max-width: 320px; line-height: 1.5; }
-  .funder-band-text { flex: 1; min-width: 240px; font-size: 0.9rem; color: var(--accent-dark); line-height: 1.7; }
+  .funder-band { background: var(--accent-light); border-top: 1px solid var(--accent-mid); border-bottom: 1px solid var(--accent-mid); padding: 1.25rem 3rem; }
+  .funder-band-inner { max-width: 1300px; margin: 0 auto; display: flex; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2rem 2.5rem; }
+  .funder-band-label { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); font-weight: 600; line-height: 1.5; flex-shrink: 0; }
+  .funder-band-text { margin: 0; font-size: 0.9rem; color: var(--accent-dark); line-height: 1.7; text-align: left; white-space: nowrap; flex-shrink: 0; }
   .funder-band-cta { display: inline-flex; align-items: center; gap: 6px; padding: 0.5rem 1.1rem; background: var(--accent); color: white; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
 
   .questions-section { padding: 2.5rem 3rem 0.5rem; max-width: 1100px; margin: 0 auto; }
@@ -135,7 +135,7 @@
     <a href="https://www.linkedin.com/in/hannahmwaller/" target="_blank">Hannah Waller</a> &nbsp;·&nbsp; Winter Fellow at <a href="https://www.governance.ai/" target="_blank">GovAI</a> &nbsp;·&nbsp; <span class="date">April 2026</span>
   </p>
   <h1>Who's working to strengthen democracy in the U.S. — and <strong>how can you help?</strong></h1>
-  <p class="pull-quote">Rapid advances in artificial intelligence are reshaping American democracy. The field of work on AI and democracy is fragmented and unclear, leaving it hard to know how or where to contribute. This site provides a curated, philanthropy-oriented guide.</p>
+  <p class="pull-quote">Rapid advances in artificial intelligence (AI) are reshaping American democracy. The field of work on AI and democracy is fragmented and unclear, leaving it hard to know how or where to contribute. This site provides a curated, philanthropy-oriented guide to the organizations doing that work, spotlighting who is using AI to strengthen democratic resilience.</p>
   <div class="stat-row">
     <div class="stat"><span class="stat-number" id="statOrgCount">0</span><span class="stat-label">Organizations</span></div>
     <div class="stat-divider"></div>
@@ -156,8 +156,8 @@
 
 <div class="funder-band">
   <div class="funder-band-inner">
-    <span class="funder-band-label">For donors (individuals, donor-advised funds, philanthropies)</span>
-    <p class="funder-band-text">Interested in contributing? The dataset includes each organization's legal status, EIN, and webpage.</p>
+    <span class="funder-band-label">For donors</span>
+    <p class="funder-band-text">Interested in contributing? The dataset includes each organization's legal status and EIN.</p>
     <a class="funder-band-cta" href="explore.html">Skip to the data →</a>
   </div>
 </div>
@@ -181,8 +181,8 @@
   </div>
   <div class="question-block">
     <p class="question-label">Explore</p>
-    <p class="question-text">What makes a democracy resilient to threats?</p>
-    <p class="question-body">From election integrity to civic participation to the information environment, this landscape organizes the field into six functional categories. Browse by focus area to see the organizations working in each space and how they're using AI.</p>
+    <p class="question-text">What does it take to strengthen democratic resilience?</p>
+    <p class="question-body">A resilient democracy is one that can withstand and recover from threats to its institutions, processes, and norms. This dataset maps organizations across six focus areas, each representing a distinct way of strengthening that resilience. Browse by focus area to learn more.</p>
     <div class="pillars-grid" style="margin: 1.25rem 0;">
       <a class="pillar-card p1" href="pillars.html#p1"><span class="pillar-icon">🗳</span><span class="pillar-name">Civic participation & deliberation</span><span class="pillar-arrow">→</span></a>
       <a class="pillar-card p2" href="pillars.html#p2"><span class="pillar-icon">🛡</span><span class="pillar-name">Election integrity</span><span class="pillar-arrow">→</span></a>
