@@ -22,17 +22,21 @@
 
   .section-divider { height: 0.5px; background: #deded8; margin: 0 3rem; }
 
-  .definitions-section { padding: 2.5rem 3rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .definitions-section { padding: 2.5rem 3rem 1.5rem; max-width: 1100px; margin: 0 auto; }
   .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); font-weight: 600; margin-bottom: 1.25rem; }
   .section-title { font-size: 1.35rem; font-weight: 500; color: #1a1a18; margin-bottom: 1.25rem; line-height: 1.3; }
-  .definitions-intro { font-size: 0.95rem; color: #444; line-height: 1.85; margin-bottom: 1.75rem; }
-  .def-list { display: flex; flex-direction: column; gap: 0; }
-  .def-item { padding: 1rem 0; border-top: 0.5px solid #deded8; display: grid; grid-template-columns: 220px 1fr; gap: 1.5rem; align-items: baseline; }
-  .def-item:last-child { border-bottom: 0.5px solid #deded8; }
-  .def-term { font-size: 0.95rem; font-weight: 600; color: #1a1a18; }
-  .def-desc { font-size: 0.9rem; color: #555; line-height: 1.75; }
+  .definitions-intro { font-size: 0.95rem; color: #444; line-height: 1.85; margin-bottom: 1.25rem; }
 
-  .pillars-section-header { padding: 3rem 3rem 0; max-width: 1100px; margin: 0 auto; }
+  .terms-table { width: 100%; border-collapse: collapse; }
+  .terms-table thead tr { border-bottom: 1px solid #deded8; }
+  .terms-table th { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; padding: 0.5rem 1rem 0.6rem 0; }
+  .terms-table th:last-child { padding-left: 1rem; }
+  .terms-table td { padding: 0.9rem 1rem 0.9rem 0; border-bottom: 0.5px solid #deded8; vertical-align: top; font-size: 0.9rem; color: #555; line-height: 1.75; }
+  .terms-table td:first-child { font-weight: 600; color: #1a1a18; width: 200px; padding-right: 1.5rem; }
+  .terms-table td:last-child { padding-left: 0; }
+  .terms-table tr:last-child td { border-bottom: none; }
+
+  .pillars-section-header { padding: 1.5rem 3rem 0; max-width: 1100px; margin: 0 auto; }
   .pillars-list { padding: 1.25rem 3rem 4rem; max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
 
   .accordion { border-radius: 8px; overflow: hidden; }
@@ -82,44 +86,45 @@
 </nav>
 
 <div class="page-header">
-  <h1>The six focus areas of <strong>democratic resilience</strong></h1>
-
+  <h1>Core concepts and focus areas</h1>
 </div>
 
 <div class="section-divider"></div>
 
 <div class="definitions-section">
-  <p class="section-label">Key concepts</p>
+  <p class="section-label">Terms</p>
   <h2 class="section-title">Understanding democratic resilience</h2>
-  <p class="definitions-intro">This site is organized around the idea that a healthy democracy depends on several interconnected systems — and that threats to any one of them can destabilize the whole. Below are the core concepts that frame how the landscape is built.</p>
-  <div class="def-list">
-
-    <div class="def-item">
-      <span class="def-term">Democracy</span>
-      <span class="def-desc">A system of government in which power is held by the people, exercised through free and fair elections, protected by the rule of law, and constrained by rights that no majority can simply vote away.</span>
-    </div>
-
-    <div class="def-item">
-      <span class="def-term">Democratic resilience</span>
-      <span class="def-desc">The capacity of democratic institutions, norms, and civil society to absorb pressure, resist authoritarian capture, and recover from shocks — whether from internal polarization, disinformation, foreign interference, or technological disruption.</span>
-    </div>
-
-    <div class="def-item">
-      <span class="def-term">Democratic backsliding</span>
-      <span class="def-desc">The gradual erosion of democratic norms and institutions — often through legal means — by actors seeking to concentrate power, undermine checks and balances, or hollow out the mechanisms that hold governments accountable.</span>
-    </div>
-
-
-  </div>
+  <p class="definitions-intro">The project uses the following foundational definitions.</p>
+  <table class="terms-table">
+    <thead>
+      <tr>
+        <th scope="col">Term</th>
+        <th scope="col">Definition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Democracy</td>
+        <td>A system of government in which power is held by the people, exercised through free and fair elections, protected by the rule of law, and constrained by rights that no majority can simply vote away.</td>
+      </tr>
+      <tr>
+        <td>Democratic resilience</td>
+        <td>The capacity of democratic institutions, norms, and civil society to absorb pressure, resist authoritarian capture, and recover from shocks — whether from internal polarization, disinformation, foreign interference, or technological disruption.</td>
+      </tr>
+      <tr>
+        <td>Democratic backsliding</td>
+        <td>The gradual erosion of democratic norms and institutions — often through legal means — by actors seeking to concentrate power, undermine checks and balances, or hollow out the mechanisms that hold governments accountable.</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <div class="section-divider"></div>
 
 <div class="pillars-section-header">
-  <p class="section-label">Core framing</p>
-  <h2 class="section-title">Six focus areas of strengthening democracy</h2>
-  <p class="definitions-intro">Each organization in the dataset is categorized by its predominant work within one or more of the below focus areas of democratic function.</p>
-
+  <p class="section-label">Focus areas</p>
+  <h2 class="section-title">Categorizing organizations&rsquo; work</h2>
+  <p class="definitions-intro">Each organization in the dataset is categorized by its predominant work within one or more of the following focus areas.</p>
 </div>
 
 <div class="pillars-list">
