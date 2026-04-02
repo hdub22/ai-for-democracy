@@ -32,6 +32,11 @@
 
   .prose p { font-size: 0.95rem; color: #444; line-height: 1.85; }
   .prose p + p { margin-top: 1rem; }
+  .prose ul { margin-top: 1rem; padding-left: 1.35rem; }
+  .prose ul li { font-size: 0.95rem; color: #444; line-height: 1.85; }
+  .prose ul li + li { margin-top: 0.75rem; }
+  .prose a { color: var(--accent); text-decoration: none; }
+  .prose a:hover { text-decoration: underline; }
 
   /* Form placeholder */
   .form-placeholder { background: #f3f3ee; border: 0.5px solid #deded8; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 420px; margin-bottom: 1rem; }
@@ -74,8 +79,11 @@
   <div class="contribute-section">
     <h2 class="section-title" style="color: var(--accent);">About this resource</h2>
     <div class="prose">
-      <p>This landscape is intended to grow over time. It was compiled during a Winter Fellowship at the Centre for the Governance of AI in early 2026, and reflects the organizations and projects the author was able to identify and verify during that period — but it is not exhaustive. There are certainly organizations missing, particularly in areas like local civic infrastructure and civic technology, where the field is large and fragmented.</p>
-      <p>All submissions are reviewed before appearing in the dataset. If you're suggesting a new organization, the most helpful information to include is the organization's name, website, a brief description of its work, and which democratic function category you think it belongs in. If you're flagging an error — a miscategorization, an outdated description, or a factual mistake — please include the organization name and what you believe should be corrected. Corrections are just as welcome as additions.</p>
+      <p>This dataset is intended to grow over time. It was compiled during a Winter Fellowship at the <a href="https://www.governance.ai" target="_blank" rel="noopener noreferrer">Centre for the Governance of AI</a> in early 2026, and reflects the organizations and projects the author was able to identify and verify during that period. Corrections and additions are welcome. All submissions are reviewed before appearing in the dataset.</p>
+      <ul>
+        <li>Please review the <a href="methodology.html">methodology page</a> to understand the scope and inclusion criteria for organizations before submitting an addition. Organizations outside that scope won't be added, but feedback is still welcome and may inform future iterations of this resource.</li>
+        <li>If you're suggesting a new organization, the most helpful information to include is the organization's name, website, a brief description of its work, and any notable projects to spotlight, particularly if they utilize AI.</li>
+      </ul>
     </div>
   </div>
 

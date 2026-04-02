@@ -15,7 +15,7 @@
   .nav-links a:hover { color: #1a1a18; }
   .nav-links a.active { color: #1a1a18; font-weight: 500; }
 
-  .page-header { padding: 2.5rem 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .page-header { padding: 2.5rem 3rem 1.5rem; max-width: 1100px; margin: 0 auto; }
   .page-header h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300; line-height: 1.2; color: #1a1a18; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
   .page-header h1 strong { font-weight: 600; }
   .page-header p { font-size: 0.95rem; color: #555; line-height: 1.75; }
@@ -24,8 +24,8 @@
 
   .content { max-width: 1100px; margin: 0 auto; padding: 0 3rem 5rem; }
 
-  .method-section { padding-top: 3rem; }
-  .method-section + .method-section { border-top: 0.5px solid #deded8; margin-top: 3rem; }
+  .method-section { padding-top: 2.25rem; }
+  .method-section + .method-section { border-top: 0.5px solid #deded8; margin-top: 2rem; }
 
   .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
   .section-title { font-size: 1.35rem; font-weight: 500; color: #1a1a18; margin-bottom: 1.25rem; line-height: 1.3; }
@@ -43,17 +43,21 @@
   .pillar-table td:first-child { padding-left: 0; width: 220px; }
   .pillar-item-desc { font-size: 0.9rem; color: #555; line-height: 1.75; }
 
-  .cell-tag { display: inline-block; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
-  .tag-p1 { background: #c8ede4; color: #1a5c4a; }
-  .tag-p2 { background: #d8cef0; color: #3d2a70; }
-  .tag-p3 { background: #f8d8c0; color: #7a3a1a; }
-  .tag-p4 { background: #c8d8f0; color: #1a3a70; }
-  .tag-p5 { background: #cceacc; color: #2a5a1a; }
-  .tag-p6 { background: #f8e8b8; color: #7a5010; }
-  .tag-p7 { background: #ecd0e4; color: #5a1a42; }
+  .inclusion-table { table-layout: fixed; width: 100%; }
+  .inclusion-table th { font-size: 12px; color: #333; }
+  .inclusion-table th:first-child,
+  .inclusion-table td:first-child { width: 20%; }
+  .inclusion-table th:nth-child(2),
+  .inclusion-table td:nth-child(2) { width: 40%; }
+  .inclusion-table th:nth-child(3),
+  .inclusion-table td:nth-child(3) { width: 40%; }
+  .inclusion-table td:first-child { font-size: 0.9rem; color: #1a1a18; }
+  .inclusion-table td { font-size: 0.9rem; color: #555; line-height: 1.75; }
+  .inclusion-table a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .inclusion-table a:hover { text-decoration: underline; }
 
   /* AI use code cards */
-  .code-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .code-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 1rem; }
   .code-card { border-radius: 8px; padding: 1.4rem 1.5rem; }
   .code-card-name { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem; }
   .code-card-desc { font-size: 0.9rem; line-height: 1.75; }
@@ -73,6 +77,11 @@
   .code-neither { background: #f3f3ee; }
   .code-neither .code-card-name { color: #555; }
   .code-neither .code-card-desc { color: #666; }
+
+  .prose-ai-note { margin-top: 1.25rem; }
+
+  .prose a { color: var(--accent); font-weight: 500; text-decoration: none; }
+  .prose a:hover { text-decoration: underline; }
 
   footer { padding: 1.75rem 3rem; border-top: 0.5px solid #deded8; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: #FAFAF7; }
   footer p { font-size: 13px; color: var(--accent); font-weight: 500; }
@@ -97,7 +106,6 @@
 
 <div class="page-header">
   <h1><strong>Methodology</strong></h1>
-  <p>How this landscape was built, what the categories mean, and how to interpret the data.</p>
 </div>
 
 <div class="section-divider"></div>
@@ -108,45 +116,47 @@
     <p class="section-label">01</p>
     <h2 class="section-title">Scope and approach</h2>
     <div class="prose">
-      <p>Placeholder paragraph one. This section will describe how organizations were identified — the initial seed list, the criteria for inclusion, and the research process used to expand and verify the landscape. It will explain what it means to work "at the intersection of AI and democracy," and why some organizations were included or excluded based on that framing.</p>
-      <p>Placeholder paragraph two. This section will also explain what counts as a U.S.-focused organization, how the data was collected and structured, and what sources were used to verify details such as EINs and legal structures. The landscape was compiled during a Winter Fellowship at the Centre for the Governance of AI in early 2026.</p>
+      <p>This landscape focuses on <strong>AI as an opportunity for democratic resilience</strong> rather than as a threat. Research on AI's risks to democracy is important but relatively well-covered; this project takes a complementary angle, mapping the organizations harnessing AI to strengthen democratic institutions rather than those solely working to mitigate its harms. In practice the two are often connected, and some organizations in this dataset do both; they are included where their democratic resilience angle is meaningful.</p>
+      <p>This dataset began with an LLM-generated longlist of organizations based on the inclusion criteria below, which was then manually verified and curated entry by entry. Organizations were assessed for activity, U.S. focus, and relevance to democratic resilience, and refined further through cross-referencing with existing resources and conversations with practitioners. The dataset is not comprehensive but aims to be a useful, curated snapshot of the field as of April 2026.</p>
     </div>
   </div>
 
   <div class="method-section">
     <p class="section-label">02</p>
-    <h2 class="section-title">The seven democratic function categories</h2>
-    <table class="pillar-table">
+    <h2 class="section-title">Inclusion and exclusion criteria</h2>
+    <table class="pillar-table inclusion-table">
       <thead>
         <tr>
-          <th>Category</th>
-          <th>Definition</th>
+          <th scope="col">Criterion</th>
+          <th scope="col">Include</th>
+          <th scope="col">Exclude</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><span class="cell-tag tag-p1">Civic participation &amp; deliberation</span></td>
-          <td><p class="pillar-item-desc">This category includes organizations that expand civic engagement, voter participation, and structured public deliberation — from get-out-the-vote campaigns to digital democracy tools to civic education programs. It excludes organizations focused primarily on election administration or the legal mechanics of voting, which fall under Election integrity.</p></td>
+          <td><strong>Democratic resilience focus</strong></td>
+          <td>Works to build, strengthen, or protect one or more of the <a href="pillars.html">six focus areas</a></td>
+          <td>Focuses solely on AI as a harm to be mitigated, with no affirmative democratic resilience angle</td>
         </tr>
         <tr>
-          <td><span class="cell-tag tag-p2">Election integrity</span></td>
-          <td><p class="pillar-item-desc">This category covers organizations working to ensure elections are free, fair, and trustworthy — including secure voting systems, transparent administration, legal protection of voting rights, and election auditing. It is distinct from civic participation in that it focuses on the integrity of the electoral process itself rather than who participates in it.</p></td>
+          <td><strong>U.S. focus</strong></td>
+          <td>Primary or exclusive U.S. focus, or a documented U.S. program directly relevant to U.S. democratic institutions</td>
+          <td>Headquartered in the U.S. but no meaningful U.S. program; global initiative with no U.S.-specific work</td>
         </tr>
         <tr>
-          <td><span class="cell-tag tag-p3">Accountability &amp; transparency</span></td>
-          <td><p class="pillar-item-desc">This category includes organizations that hold government and powerful institutions accountable — through investigative journalism, litigation, open-data tools, public records advocacy, and anti-corruption work. Organizations are included here when their core function is oversight and accountability rather than advocacy for a specific policy position.</p></td>
+          <td><strong>Actor type</strong></td>
+          <td>Civil society organizations, coalitions, and academic institutions</td>
+          <td>Federal government agencies; organizations that are primarily funders</td>
         </tr>
         <tr>
-          <td><span class="cell-tag tag-p4">Information environment &amp; epistemics</span></td>
-          <td><p class="pillar-item-desc">This category covers organizations working on the health of the information ecosystem — including misinformation research, media literacy, fact-checking, platform governance, and the study of how information spreads. As AI reshapes content production and distribution, this focus area has become increasingly central to democratic resilience. It excludes journalism organizations unless their primary focus is the information environment itself.</p></td>
+          <td><strong>Access</strong></td>
+          <td>Free or open access to tools, research, or resources</td>
+          <td>Tools or services that are primarily commercial, paywalled, or require a client relationship</td>
         </tr>
         <tr>
-          <td><span class="cell-tag tag-p5">Civil society capacity</span></td>
-          <td><p class="pillar-item-desc">This category includes organizations that fund, train, or build infrastructure for civil society — philanthropies, capacity-building intermediaries, civic technology developers, and nonprofit support organizations. These are organizations whose primary contribution is enabling other democratic actors rather than doing front-line advocacy or research themselves.</p></td>
-        </tr>
-        <tr>
-          <td><span class="cell-tag tag-p7">Governance &amp; policy</span></td>
-          <td><p class="pillar-item-desc">This category includes organizations that shape the rules, norms, and frameworks governing AI and democratic institutions — through policy advocacy, standards development, regulatory engagement, and legal reform. It is the broadest category and includes both technology-focused organizations working on AI governance and democracy-focused organizations engaging with technology policy.</p></td>
+          <td><strong>Activity</strong></td>
+          <td>Active as of April 2026, with updates shared on the organization's webpage or social media channels within the last six months</td>
+          <td>Defunct or inactive organizations</td>
         </tr>
       </tbody>
     </table>
@@ -154,33 +164,38 @@
 
   <div class="method-section">
     <p class="section-label">03</p>
-    <h2 class="section-title">AI use codes</h2>
+    <h2 class="section-title">AI use</h2>
+    <div class="prose">
+      <p>Each organization is coded for <strong>whether AI is part of its theory of change (core programming) for democratic resilience</strong>, rather than its internal operations. An organization using an AI-powered deliberation platform is coded differently from one using an LLM to review grant applications; the former is using AI as a tool to achieve its core goals, the latter is not.</p>
+    </div>
     <div class="code-grid">
       <div class="code-card code-tool">
         <div class="code-card-name">Tool</div>
-        <div class="code-card-desc">The organization uses AI as a tool in its own work — for example, using machine learning to analyze data, detect misinformation, or automate research tasks. AI is an input to their operations, not the subject of their advocacy or research.</div>
+        <div class="code-card-desc">AI is used as a core part of the organization's democratic resilience programming</div>
       </div>
       <div class="code-card code-subject">
         <div class="code-card-name">Subject</div>
-        <div class="code-card-desc">The organization works on AI as a policy, research, or advocacy topic — for example, researching AI's effects on elections, advocating for AI regulation, or tracking how AI is being deployed by government. They study or shape AI; they don't necessarily use it themselves.</div>
+        <div class="code-card-desc">The organization's democratic resilience contribution is shaping AI policy, governance, or regulation</div>
       </div>
       <div class="code-card code-both">
         <div class="code-card-name">Both</div>
-        <div class="code-card-desc">The organization both uses AI in its own work and works on AI as a subject — for example, a research lab that builds AI-powered tools and also publishes policy recommendations on AI governance.</div>
+        <div class="code-card-desc">The organization both deploys AI in its core programming (tool) and works to shape how it is governed or regulated (subject).</div>
       </div>
       <div class="code-card code-neither">
         <div class="code-card-name">Neither</div>
-        <div class="code-card-desc">The organization's work is relevant to democratic resilience but does not have a meaningful relationship to AI — either as a tool they use or as a subject they engage with. Included because the landscape aims to map the full field, not only AI-native actors.</div>
+        <div class="code-card-desc">No AI focus (tool or subject) is documented in the organization's democratic resilience programming. This doesn't mean that the organization definitively does not use AI, only that it is not a prominent or stated feature of their work.</div>
       </div>
+    </div>
+    <div class="prose prose-ai-note">
+      <p>For the purposes of this dataset, <strong>AI refers to machine learning-based techniques</strong> — including large language models, natural language processing, and computer vision — that enable pattern recognition, prediction, content generation, or data analysis at a scale or quality not achievable through conventional software. Basic digital tools, rule-based automation, and standard databases do not qualify.</p>
     </div>
   </div>
 
   <div class="method-section">
     <p class="section-label">04</p>
-    <h2 class="section-title">Limitations and caveats</h2>
+    <h2 class="section-title">Focus areas</h2>
     <div class="prose">
-      <p>Placeholder paragraph one. All categorizations in this landscape reflect the author's judgment and should be read as interpretive rather than definitive. Reasonable people may categorize the same organization differently — particularly for organizations whose work spans multiple democratic functions. Where an organization's work clearly spans two focus areas, it was assigned to the category that best reflects its primary focus; a future version of this landscape may allow multi-category tagging.</p>
-      <p>Placeholder paragraph two. This landscape is U.S.-focused by design, but the boundary is imprecise. Some organizations included here do significant international work; others are U.S.-based but operate globally. Organizations were included if their primary base of operations or primary focus is the United States. The landscape is also not exhaustive — particularly in areas like civic technology and local civic infrastructure, where the field is large and fragmented. Suggestions for additions are welcome via the contribute page.</p>
+      <p>Organizations are categorized by their predominant work within one or more of six focus areas, each representing a distinct way of strengthening democratic resilience. Learn more on the <a href="pillars.html">Focus Areas</a> page.</p>
     </div>
   </div>
 
