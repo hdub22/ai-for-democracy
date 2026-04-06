@@ -9,7 +9,8 @@
   :root { --accent: #2e7d65; --accent-light: #e6f3ee; --accent-mid: #c2dfd5; --accent-dark: #1f5446; }
 
   nav { display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; height: 56px; background: #FAFAF7; border-bottom: 0.5px solid #deded8; position: sticky; top: 0; z-index: 100; }
-  .nav-logo { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; color: #1a1a18; text-transform: uppercase; }
+  .nav-logo { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; color: #1a1a18; text-transform: uppercase; text-decoration: none; }
+  .nav-logo:hover { opacity: 0.75; }
   .nav-links { display: flex; gap: 2rem; }
   .nav-links a { font-size: 13px; color: #888; text-decoration: none; }
   .nav-links a:hover { color: #1a1a18; }
@@ -159,7 +160,7 @@
 <body>
 
 <nav>
-  <span class="nav-logo">AI for Democracy</span>
+  <a class="nav-logo" href="index.html">AI for Democracy</a>
   <div class="nav-links">
     <a href="index.html">Home</a>
     <a href="pillars.html">Focus Areas</a>
