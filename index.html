@@ -312,10 +312,11 @@ function aiaPickRandom(exclude) {
 }
 
 function aiaRenderCard(s) {
+  const teaser = typeof spotlightFirstSentence === 'function' ? spotlightFirstSentence(s.desc) : s.desc;
   return `<div class="aia-card" data-name="${escapeHtml(s.name)}">
     <span class="org-card-tag ${s.tag}">${escapeHtml(s.cat)}</span>
     <div class="aia-card-name">${escapeHtml(s.name)}</div>
-    <div class="aia-card-desc">${escapeHtml(s.desc)}</div>
+    <div class="aia-card-desc">${escapeHtml(teaser)}</div>
     <div class="aia-card-org">${escapeHtml(s.org)}</div>
   </div>`;
 }

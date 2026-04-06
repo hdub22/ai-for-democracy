@@ -53,16 +53,22 @@
   .modal-backdrop.visible .modal { transform: scale(1) translateY(0); }
 
   .modal-photo { width: 100%; height: 220px; background: #e8e8e4; display: flex; align-items: center; justify-content: center; border-radius: 10px 10px 0 0; overflow: hidden; position: relative; }
+  .modal-photo-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; display: none; }
+  .modal-photo-img.is-contain { object-fit: contain; object-position: center center; }
+  .modal-photo.has-image .modal-photo-img { display: block; }
+  .modal-photo.has-image .modal-photo-placeholder { display: none; }
   .modal-photo-placeholder { font-size: 12px; color: #aaa; letter-spacing: 0.08em; text-transform: uppercase; }
 
   .modal-body { padding: 1.75rem 2rem 2rem; }
   .modal-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
   .modal-org { font-size: 12px; color: #888; }
   .modal-title { font-size: 1.35rem; font-weight: 600; color: #1a1a18; line-height: 1.25; margin-bottom: 1rem; }
+  .modal-title a { color: inherit; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 0.2em; }
+  .modal-title a:hover { color: var(--accent); }
   .modal-divider { height: 0.5px; background: #deded8; margin-bottom: 1rem; }
-  .modal-desc { font-size: 0.95rem; color: #444; line-height: 1.8; }
+  .modal-desc { font-size: 0.95rem; color: #444; line-height: 1.8; white-space: pre-line; }
 
-  .modal-close { position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px; background: rgba(255,255,255,0.85); border: none; border-radius: 50%; cursor: pointer; font-size: 16px; color: #555; display: flex; align-items: center; justify-content: center; line-height: 1; transition: background 0.15s ease; }
+  .modal-close { position: absolute; top: 1rem; right: 1rem; z-index: 2; width: 32px; height: 32px; background: rgba(255,255,255,0.85); border: none; border-radius: 50%; cursor: pointer; font-size: 16px; color: #555; display: flex; align-items: center; justify-content: center; line-height: 1; transition: background 0.15s ease; }
   .modal-close:hover { background: white; color: #1a1a18; }
 
   footer { padding: 1.75rem 3rem; border-top: 0.5px solid #deded8; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: #FAFAF7; }
@@ -102,7 +108,8 @@
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal" id="modal">
     <div class="modal-photo" id="modalPhoto">
-      <span class="modal-photo-placeholder">Photo placeholder</span>
+      <img class="modal-photo-img" id="modalPhotoImg" src="" alt="" width="820" height="220" decoding="async">
+      <span class="modal-photo-placeholder" id="modalPhotoPlaceholder">Photo placeholder</span>
       <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
     </div>
     <div class="modal-body">
@@ -139,7 +146,7 @@
         '<div class="spotlight-card" data-index="' + idx + '">' +
           '<span class="card-tag ' + p.tagClass + '">' + escapeHtml(p.tag) + '</span>' +
           '<div class="card-name">' + escapeHtml(p.name) + '</div>' +
-          '<div class="card-desc">' + escapeHtml(p.desc) + '</div>' +
+          '<div class="card-desc">' + escapeHtml(typeof spotlightFirstSentence === 'function' ? spotlightFirstSentence(p.desc) : p.desc) + '</div>' +
           '<div class="card-org">' + escapeHtml(p.org) + '</div>' +
           '<span class="card-expand">↗ Read more</span>' +
         '</div>'
@@ -154,17 +161,46 @@
   const modalOrg = document.getElementById('modalOrg');
   const modalTitle = document.getElementById('modalTitle');
   const modalDesc = document.getElementById('modalDesc');
+  const modalPhoto = document.getElementById('modalPhoto');
+  const modalPhotoImg = document.getElementById('modalPhotoImg');
 
   document.getElementById('spotlightGrid').addEventListener('click', function (e) {
     const card = e.target.closest('.spotlight-card');
     if (!card) return;
     const p = SPOTLIGHT_CARDS[card.dataset.index];
     if (!p) return;
+    if (p.image) {
+      modalPhotoImg.src = p.image;
+      modalPhotoImg.alt = 'Screenshot: ' + (p.name || 'Project');
+      modalPhoto.classList.add('has-image');
+      if (p.imageFit === 'contain') {
+        modalPhotoImg.classList.add('is-contain');
+      } else {
+        modalPhotoImg.classList.remove('is-contain');
+      }
+      modalPhoto.style.backgroundColor = p.photoBg || '';
+    } else {
+      modalPhotoImg.removeAttribute('src');
+      modalPhotoImg.alt = '';
+      modalPhotoImg.classList.remove('is-contain');
+      modalPhoto.style.backgroundColor = '';
+      modalPhoto.classList.remove('has-image');
+    }
     modalTag.textContent = p.tag;
     modalTag.className = 'card-tag ' + p.tagClass;
     modalOrg.textContent = p.org;
-    modalTitle.textContent = p.name;
-    modalDesc.textContent = p.long;
+    modalTitle.textContent = '';
+    if (p.url) {
+      const a = document.createElement('a');
+      a.href = p.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = p.name;
+      modalTitle.appendChild(a);
+    } else {
+      modalTitle.textContent = p.name;
+    }
+    modalDesc.textContent = typeof spotlightModalBody === 'function' ? spotlightModalBody(p) : (p.long || p.desc);
     backdrop.classList.add('visible');
     document.body.style.overflow = 'hidden';
   });
