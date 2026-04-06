@@ -179,10 +179,12 @@
         modalPhotoImg.classList.remove('is-contain');
       }
       modalPhoto.style.backgroundColor = p.photoBg || '';
+      modalPhotoImg.style.objectPosition = p.imagePosition || '';
     } else {
       modalPhotoImg.removeAttribute('src');
       modalPhotoImg.alt = '';
       modalPhotoImg.classList.remove('is-contain');
+      modalPhotoImg.style.objectPosition = '';
       modalPhoto.style.backgroundColor = '';
       modalPhoto.classList.remove('has-image');
     }
