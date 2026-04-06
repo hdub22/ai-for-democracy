@@ -96,8 +96,13 @@
 <body>
 
 <nav>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav-menu" aria-label="Open menu">
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+  </button>
   <a class="nav-logo" href="index.html">AI for Democracy</a>
-  <div class="nav-links">
+  <div class="nav-links" id="site-nav-menu">
     <a href="index.html">Home</a>
     <a href="pillars.html" class="active">Focus Areas</a>
     <a href="project-spotlight.html">Project Spotlight</a>
@@ -377,5 +382,6 @@
   }
 </script>
 
+<script src="nav.js" defer></script>
 </body>
 </html>
