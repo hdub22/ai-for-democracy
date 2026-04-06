@@ -22,10 +22,12 @@
 
   .section-divider { height: 0.5px; background: #deded8; margin: 0 3rem; }
 
-  .definitions-section { padding: 2.5rem 3rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .definitions-section { padding: 2rem 3rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .section-divider + .definitions-section { padding-top: 1.75rem; }
   .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); font-weight: 600; margin-bottom: 1.25rem; }
   .section-title { font-size: 1.35rem; font-weight: 500; color: #1a1a18; margin-bottom: 1.25rem; line-height: 1.3; }
   .definitions-intro { font-size: 0.95rem; color: #444; line-height: 1.85; margin-bottom: 1.25rem; }
+  .pillars-section-header .definitions-intro { margin-bottom: 0.75rem; }
 
   .terms-table { width: 100%; border-collapse: collapse; }
   .terms-table thead tr { border-bottom: 1px solid #deded8; }
@@ -36,8 +38,21 @@
   .terms-table td:last-child { padding-left: 0; }
   .terms-table tr:last-child td { border-bottom: none; }
 
-  .pillars-section-header { padding: 1.5rem 3rem 0; max-width: 1100px; margin: 0 auto; }
-  .pillars-list { padding: 1.25rem 3rem 4rem; max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+  .terms-details { margin-top: 0.5rem; border: 0.5px solid #deded8; border-radius: 8px; background: #fff; overflow: hidden; }
+  .terms-details .terms-summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; font-size: 0.95rem; color: #444; line-height: 1.5; transition: background 0.15s ease; }
+  .terms-details .terms-summary::-webkit-details-marker { display: none; }
+  .terms-details .terms-summary:hover { background: #fafaf8; }
+  .terms-details .terms-summary strong { color: #1a1a18; font-weight: 600; }
+  .terms-details .terms-chevron { flex-shrink: 0; font-size: 11px; color: var(--accent); opacity: 0.85; transition: transform 0.2s ease; }
+  .terms-details[open] .terms-chevron { transform: rotate(-180deg); }
+  .terms-details-inner { padding: 1rem 1.25rem 1.25rem; border-top: 0.5px solid #eeece8; }
+  .terms-details + .terms-details { margin-top: 0.75rem; }
+  .sources-list { margin: 0; padding-left: 1.35rem; font-size: 0.9rem; color: #555; line-height: 1.75; }
+  .sources-list li { margin-bottom: 0.75rem; padding-left: 0.25rem; }
+  .sources-list li:last-child { margin-bottom: 0; }
+
+  .pillars-section-header { padding: 2.5rem 3rem 0; max-width: 1100px; margin: 0 auto; }
+  .pillars-list { padding: 0.75rem 3rem 2.5rem; max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
 
   .accordion { border-radius: 8px; overflow: hidden; }
 
@@ -76,7 +91,7 @@
   <span class="nav-logo">AI for Democracy</span>
   <div class="nav-links">
     <a href="index.html">Home</a>
-    <a href="#" class="active">Focus Areas</a>
+    <a href="pillars.html" class="active">Focus Areas</a>
     <a href="project-spotlight.html">Project Spotlight</a>
     <a href="explore.html">Explore Data</a>
     <a href="methodology.html">Methodology</a>
@@ -87,36 +102,6 @@
 
 <div class="page-header">
   <h1>Core concepts and focus areas</h1>
-</div>
-
-<div class="section-divider"></div>
-
-<div class="definitions-section">
-  <p class="section-label">Terms</p>
-  <h2 class="section-title">Understanding democratic resilience</h2>
-  <p class="definitions-intro">The project uses the following foundational definitions.</p>
-  <table class="terms-table">
-    <thead>
-      <tr>
-        <th scope="col">Term</th>
-        <th scope="col">Definition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Democracy</td>
-        <td>A system of government in which power is held by the people, exercised through free and fair elections, protected by the rule of law, and constrained by rights that no majority can simply vote away.</td>
-      </tr>
-      <tr>
-        <td>Democratic resilience</td>
-        <td>The capacity of democratic institutions, norms, and civil society to absorb pressure, resist authoritarian capture, and recover from shocks — whether from internal polarization, disinformation, foreign interference, or technological disruption.</td>
-      </tr>
-      <tr>
-        <td>Democratic backsliding</td>
-        <td>The gradual erosion of democratic norms and institutions — often through legal means — by actors seeking to concentrate power, undermine checks and balances, or hollow out the mechanisms that hold governments accountable.</td>
-      </tr>
-    </tbody>
-  </table>
 </div>
 
 <div class="section-divider"></div>
@@ -243,6 +228,65 @@
     </div>
   </div>
 
+</div>
+
+<div class="section-divider"></div>
+
+<div class="definitions-section">
+  <p class="section-label">Terms</p>
+  <h2 class="section-title">Understanding democratic resilience</h2>
+  <details class="terms-details">
+    <summary class="terms-summary">
+      <span><strong>Foundational definitions</strong></span>
+      <span class="terms-chevron" aria-hidden="true">▼</span>
+    </summary>
+    <div class="terms-details-inner">
+  <table class="terms-table">
+    <thead>
+      <tr>
+        <th scope="col">Term</th>
+        <th scope="col">Definition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Democracy</td>
+        <td>A system of governance in which political power is derived from and accountable to the people it governs, maintained through free and fair elections, the rule of law, civil liberties, and institutional constraints on power that operate independently of electoral outcomes (Dahl, 1989).</td>
+      </tr>
+      <tr>
+        <td>Liberal democracy</td>
+        <td>A form of democracy that goes beyond free and fair elections, also requiring rule of law, civil liberties, and institutional constraints on power that operate independently of electoral outcomes. Distinct from electoral democracy, which refers to free and fair elections alone. This project uses liberal democracy as its baseline.</td>
+      </tr>
+      <tr>
+        <td>Democratic resilience</td>
+        <td>The capacity of a democracy to maintain its core functions under stress and recover when those functions are threatened. This extends beyond formal institutions like courts and legislatures to the informal norms governing how leaders use power, civil society&rsquo;s ability to organize and apply pressure, and a reliable and independent information ecosystem that allows citizens to recognize and push back against democratic backsliding (Merkel &amp; L&uuml;hrmann, 2021).</td>
+      </tr>
+      <tr>
+        <td>Autocratization</td>
+        <td>The process by which a country moves from more democratic toward more authoritarian rule, typically through gradual, incremental steps that maintain the appearance of democratic governance (L&uuml;hrmann &amp; Lindberg, 2019).</td>
+      </tr>
+      <tr>
+        <td>Democratic backsliding</td>
+        <td>The gradual weakening of democratic functions — typically through legal means — as actors manipulate elections, undermine courts, or silence opposition and civil society, so that leaders become less accountable and governance more concentrated (Bermeo, 2016; L&uuml;hrmann &amp; Lindberg, 2019). Backsliding is a form of autocratization.</td>
+      </tr>
+    </tbody>
+  </table>
+    </div>
+  </details>
+  <details class="terms-details">
+    <summary class="terms-summary">
+      <span><strong>Sources</strong></span>
+      <span class="terms-chevron" aria-hidden="true">▼</span>
+    </summary>
+    <div class="terms-details-inner">
+      <ul class="sources-list">
+        <li>Bermeo, N. (2016). &ldquo;On Democratic Backsliding.&rdquo; <em>Journal of Democracy</em>, 27(1), 5&ndash;19.</li>
+        <li>Dahl, R.A. (1989). <em>Democracy and its Critics</em>. Yale University Press.</li>
+        <li>L&uuml;hrmann, A. and Lindberg, S.I. (2019). &ldquo;A third wave of autocratization is here: what is new about it?&rdquo; <em>Democratization</em>, 26(7), 1095&ndash;1113.</li>
+        <li>Merkel, W. and L&uuml;hrmann, A. (2021). &ldquo;Resilience of Democracies: Responses to Illiberal and Authoritarian Challenges.&rdquo; <em>Democratization</em>, 28(5), 869&ndash;884.</li>
+      </ul>
+    </div>
+  </details>
 </div>
 
 <footer>
