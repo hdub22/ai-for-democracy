@@ -16,9 +16,10 @@
   .nav-links a.active { color: #1a1a18; font-weight: 500; }
 
   .page-header { padding: 2.5rem 3rem 2rem; max-width: 1600px; margin: 0 auto; }
-  .page-header h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300; line-height: 1.2; color: #1a1a18; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
-  .page-header h1 strong { font-weight: 600; }
+  .page-header h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 600; line-height: 1.2; color: #1a1a18; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
   .page-header p { font-size: 0.95rem; color: #555; line-height: 1.75; }
+  .page-header p a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .page-header p a:hover { text-decoration: underline; }
 
   .section-divider { height: 0.5px; background: #deded8; margin: 0 3rem; }
 
@@ -166,15 +167,15 @@
 </nav>
 
 <div class="page-header">
-  <h1>Explore the <strong>data</strong></h1>
-  <p>Browse organizations working in democratic resilience in the United States. This is a living resource, not yet exhaustive — read the methodology or contribute feedback.</p>
+  <h1>Explore the data</h1>
+  <p>Browse a curated list of organizations working to strengthen democratic resilience in the United States. Learn more about the <a href="methodology.html">methodology</a> or <a href="contribute.html">share feedback</a>.</p>
 </div>
 
 <div class="section-divider"></div>
 
 <div class="filter-wrap">
   <div class="filter-row">
-    <span class="filter-row-label">Function</span>
+    <span class="filter-row-label">Function (focus area)</span>
     <button class="pill pill-neutral active" data-filter="category" data-value="">All</button>
     <button class="pill pill-p1" data-filter="category" data-value="civic participation & deliberation">🗳 Civic participation</button>
     <button class="pill pill-p2" data-filter="category" data-value="election integrity">🛡 Election integrity</button>
