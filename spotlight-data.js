@@ -1,7 +1,7 @@
 /**
  * Project Spotlight cards — shared by index.html (shuffle preview) and project-spotlight.html.
  * Edit this file to update spotlight content everywhere.
- * Optional fields per card: url (project link), image (path to header image for modal, e.g. images/foo.png), imageFit: 'contain' (fit whole image without cropping; default is cover), photoBg (e.g. '#fff' for header strip behind image), imagePosition (CSS object-position when using cover, e.g. 'center top').
+ * Optional fields per card: url (project link), image (path to header image for modal, e.g. images/foo.png), imageFit: 'contain' (fit whole image without cropping; default is cover), photoBg (e.g. '#fff' for header strip behind image), imagePosition (CSS object-position when using cover, e.g. 'center top'), exploreOrg (string to match Explore "Actor" column when it differs from org).
  * Collapsed cards show spotlightFirstSentence(desc); modal uses long when set, otherwise full desc.
  */
 var SPOTLIGHT_CARDS = [
@@ -110,6 +110,49 @@ var SPOTLIGHT_CARDS = [
     desc: 'A nonpartisan fact-checking outlet that rates the accuracy of statements made by politicians and public figures, giving citizens independently verified information to hold leaders accountable. Founded in 2007 and now owned by the nonprofit Poynter Institute, it covers national politics alongside state-level fact-checking through a network of partner news organizations.'
   }
 ];
+
+/**
+ * Reorder cards for a 2-column grid so neighbors (left/right and top/bottom) tend to differ in tag.
+ * Uses a greedy pass that picks the next card with the fewest tag clashes; some clashes are unavoidable
+ * when many cards share one category.
+ */
+function spotlightCardsForGrid(cards) {
+  if (!cards || cards.length === 0) return [];
+  var arr = cards.slice();
+  var n = arr.length;
+  var result = new Array(n);
+  var remaining = [];
+  var i;
+  for (i = 0; i < n; i++) remaining.push(i);
+
+  function tagKey(p) {
+    return (p && p.tag) ? String(p.tag) : '';
+  }
+
+  function conflictCount(slot, p) {
+    var t = tagKey(p);
+    var c = 0;
+    if (slot >= 1 && slot % 2 === 1 && tagKey(result[slot - 1]) === t) c++;
+    if (slot >= 2 && tagKey(result[slot - 2]) === t) c++;
+    return c;
+  }
+
+  for (var slot = 0; slot < n; slot++) {
+    var bestR = 0;
+    var bestScore = 999;
+    for (var r = 0; r < remaining.length; r++) {
+      var pi = remaining[r];
+      var score = conflictCount(slot, arr[pi]);
+      if (score < bestScore) {
+        bestScore = score;
+        bestR = r;
+      }
+    }
+    result[slot] = arr[remaining[bestR]];
+    remaining.splice(bestR, 1);
+  }
+  return result;
+}
 
 /** First sentence of desc for collapsed cards (grid + home teaser). */
 function spotlightFirstSentence(text) {

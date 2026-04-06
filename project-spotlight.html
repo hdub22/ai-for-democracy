@@ -33,7 +33,9 @@
   .card-tag { display: inline-block; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 3px; align-self: flex-start; }
   .card-name { font-size: 14px; font-weight: 600; color: #1a1a18; line-height: 1.35; }
   .card-desc { font-size: 13px; color: #555; line-height: 1.65; flex: 1; }
-  .card-org { font-size: 12px; color: #aaa; font-weight: 400; }
+  .card-org { font-size: 12px; color: #aaa; font-weight: 400; align-self: flex-start; }
+  a.card-org-link { color: inherit; text-decoration: none; border-bottom: 1px solid #deded8; cursor: pointer; }
+  a.card-org-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
   .card-expand { font-size: 11px; color: #ccc; align-self: flex-end; margin-top: 0.25rem; transition: color 0.15s ease; letter-spacing: 0.04em; }
   .spotlight-card:hover .card-expand { color: #aaa; }
 
@@ -62,6 +64,8 @@
   .modal-body { padding: 1.75rem 2rem 2rem; }
   .modal-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
   .modal-org { font-size: 12px; color: #888; }
+  .modal-org-link { color: inherit; text-decoration: none; border-bottom: 1px solid #deded8; }
+  .modal-org-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
   .modal-title { font-size: 1.35rem; font-weight: 600; color: #1a1a18; line-height: 1.25; margin-bottom: 1rem; }
   .modal-title a { color: inherit; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 0.2em; }
   .modal-title a:hover { color: var(--accent); }
@@ -94,7 +98,7 @@
 
 <div class="page-header">
   <h1>Project spotlight</h1>
-  <p>Initiatives that use AI in innovative ways to strengthen democratic resilience in the United States. More detail on the organizations, along with other notable projects, can be found in the <a href="explore.html">full dataset</a>.</p>
+  <p>Initiatives that use technology in innovative ways to strengthen democratic resilience in the United States. More detail on the organizations, along with other notable projects, can be found in the <a href="explore.html">full dataset</a>.</p>
 </div>
 
 <div class="section-divider"></div>
@@ -138,16 +142,22 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
   }
 
+  /** Order used on this page (spread categories in the 2-col grid); same order for modal lookup. */
+  var spotlightGridOrder = [];
+
   function renderSpotlightGrid() {
     const grid = document.getElementById('spotlightGrid');
     if (!grid || typeof SPOTLIGHT_CARDS === 'undefined') return;
-    grid.innerHTML = SPOTLIGHT_CARDS.map(function (p, idx) {
+    spotlightGridOrder = typeof spotlightCardsForGrid === 'function'
+      ? spotlightCardsForGrid(SPOTLIGHT_CARDS)
+      : SPOTLIGHT_CARDS.slice();
+    grid.innerHTML = spotlightGridOrder.map(function (p, idx) {
       return (
         '<div class="spotlight-card" data-index="' + idx + '">' +
           '<span class="card-tag ' + p.tagClass + '">' + escapeHtml(p.tag) + '</span>' +
           '<div class="card-name">' + escapeHtml(p.name) + '</div>' +
           '<div class="card-desc">' + escapeHtml(typeof spotlightFirstSentence === 'function' ? spotlightFirstSentence(p.desc) : p.desc) + '</div>' +
-          '<div class="card-org">' + escapeHtml(p.org) + '</div>' +
+          '<a class="card-org card-org-link" href="explore.html?org=' + encodeURIComponent(p.exploreOrg || p.org || '') + '">' + escapeHtml(p.org) + '</a>' +
           '<span class="card-expand">↗ Read more</span>' +
         '</div>'
       );
@@ -164,10 +174,7 @@
   const modalPhoto = document.getElementById('modalPhoto');
   const modalPhotoImg = document.getElementById('modalPhotoImg');
 
-  document.getElementById('spotlightGrid').addEventListener('click', function (e) {
-    const card = e.target.closest('.spotlight-card');
-    if (!card) return;
-    const p = SPOTLIGHT_CARDS[card.dataset.index];
+  function openSpotlightModal(p) {
     if (!p) return;
     if (p.image) {
       modalPhotoImg.src = p.image;
@@ -190,7 +197,12 @@
     }
     modalTag.textContent = p.tag;
     modalTag.className = 'card-tag ' + p.tagClass;
-    modalOrg.textContent = p.org;
+    modalOrg.textContent = '';
+    const orgLink = document.createElement('a');
+    orgLink.className = 'modal-org-link';
+    orgLink.href = 'explore.html?org=' + encodeURIComponent(p.exploreOrg || p.org || '');
+    orgLink.textContent = p.org || '';
+    modalOrg.appendChild(orgLink);
     modalTitle.textContent = '';
     if (p.url) {
       const a = document.createElement('a');
@@ -205,6 +217,39 @@
     modalDesc.textContent = typeof spotlightModalBody === 'function' ? spotlightModalBody(p) : (p.long || p.desc);
     backdrop.classList.add('visible');
     document.body.style.overflow = 'hidden';
+  }
+
+  function findProjectByQueryName(want) {
+    if (!want || !spotlightGridOrder.length) return null;
+    var w = String(want).trim();
+    var i;
+    for (i = 0; i < spotlightGridOrder.length; i++) {
+      if (spotlightGridOrder[i].name === w) return spotlightGridOrder[i];
+    }
+    var wl = w.toLowerCase();
+    for (i = 0; i < spotlightGridOrder.length; i++) {
+      if (spotlightGridOrder[i].name.toLowerCase() === wl) return spotlightGridOrder[i];
+    }
+    return null;
+  }
+
+  function maybeOpenModalFromQuery() {
+    var params = new URLSearchParams(window.location.search);
+    var raw = params.get('project');
+    if (!raw) return;
+    var p = findProjectByQueryName(decodeURIComponent(raw));
+    if (p) openSpotlightModal(p);
+  }
+
+  maybeOpenModalFromQuery();
+
+  document.getElementById('spotlightGrid').addEventListener('click', function (e) {
+    if (e.target.closest('a.card-org-link')) return;
+    const card = e.target.closest('.spotlight-card');
+    if (!card) return;
+    const p = spotlightGridOrder[card.dataset.index];
+    if (!p) return;
+    openSpotlightModal(p);
   });
 
   function closeModal() {

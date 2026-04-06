@@ -103,11 +103,14 @@
   .aia-see-all { font-size: 13px; color: var(--accent); font-weight: 500; text-decoration: none; flex-shrink: 0; }
   .aia-see-all:hover { text-decoration: underline; }
   .aia-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .aia-card { background: white; border: 0.5px solid #deded8; border-radius: 8px; padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 0.5rem; transition: opacity 0.4s ease, transform 0.4s ease; }
+  .aia-card { background: white; border: 0.5px solid #deded8; border-radius: 8px; padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 0.5rem; transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.15s ease, box-shadow 0.15s ease; cursor: pointer; }
+  .aia-card:hover { border-color: #aaa; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .aia-card:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
   .aia-card.fading { opacity: 0; transform: scale(0.96); }
   .aia-card-name { font-size: 15px; font-weight: 600; color: #1a1a18; line-height: 1.35; }
   .aia-card-desc { font-size: 13px; color: #555; line-height: 1.65; flex: 1; }
-  .aia-card-org { font-size: 12px; color: #aaa; margin-top: 0.25rem; }
+  .aia-card-org { font-size: 12px; color: #aaa; margin-top: 0.25rem; text-decoration: none; border-bottom: 1px solid #deded8; align-self: flex-start; }
+  .aia-card-org:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
   footer { padding: 1.75rem 3rem; border-top: 0.5px solid #deded8; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: #FAFAF7; }
   footer p { font-size: 13px; color: var(--accent); font-weight: 500; }
@@ -247,7 +250,7 @@ function escapeHtml(s) {
 }
 
 const spotlights = (typeof SPOTLIGHT_CARDS !== 'undefined' ? SPOTLIGHT_CARDS : []).map(function (c) {
-  return { name: c.name, desc: c.desc, tag: c.tagClass, cat: c.tag, org: c.org };
+  return { name: c.name, desc: c.desc, tag: c.tagClass, cat: c.tag, org: c.org, exploreOrg: c.exploreOrg };
 });
 
 let orgs = [];
@@ -313,11 +316,11 @@ function aiaPickRandom(exclude) {
 
 function aiaRenderCard(s) {
   const teaser = typeof spotlightFirstSentence === 'function' ? spotlightFirstSentence(s.desc) : s.desc;
-  return `<div class="aia-card" data-name="${escapeHtml(s.name)}">
+  return `<div class="aia-card" tabindex="0" role="link" aria-label="Open ${escapeHtml(s.name)} in Project Spotlight" data-name="${escapeHtml(s.name)}">
     <span class="org-card-tag ${s.tag}">${escapeHtml(s.cat)}</span>
     <div class="aia-card-name">${escapeHtml(s.name)}</div>
     <div class="aia-card-desc">${escapeHtml(teaser)}</div>
-    <div class="aia-card-org">${escapeHtml(s.org)}</div>
+    <a class="aia-card-org" href="explore.html?org=${encodeURIComponent(s.exploreOrg || s.org || '')}">${escapeHtml(s.org)}</a>
   </div>`;
 }
 
@@ -349,6 +352,26 @@ function aiaSwap() {
 if (spotlights.length) {
   aiaInit();
   setInterval(aiaSwap, 2800);
+
+  aiaGrid.addEventListener('click', function (e) {
+    if (e.target.closest('a.aia-card-org')) return;
+    const card = e.target.closest('.aia-card');
+    if (!card) return;
+    const name = card.getAttribute('data-name');
+    if (!name) return;
+    window.location.href = 'project-spotlight.html?project=' + encodeURIComponent(name);
+  });
+
+  aiaGrid.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (e.target.closest('a.aia-card-org')) return;
+    const card = e.target.closest('.aia-card');
+    if (!card) return;
+    e.preventDefault();
+    const name = card.getAttribute('data-name');
+    if (!name) return;
+    window.location.href = 'project-spotlight.html?project=' + encodeURIComponent(name);
+  });
 }
 
 // Live stats from Google Sheet

@@ -101,6 +101,11 @@
   tbody tr:nth-child(even) td { background: #f4f4f0; }
   tbody tr:hover td { background: #eaeae4; }
 
+  tbody tr.row-org-highlight td {
+    background: #e6f3ee !important;
+    box-shadow: inset 4px 0 0 var(--accent);
+  }
+
   td.col-org { font-weight: 600; color: #1a1a18; min-width: 160px; max-width: 240px; }
   td.col-org a { color: #1a1a18; text-decoration: none; border-bottom: 1px solid #deded8; }
   td.col-org a:hover { border-bottom-color: #1a1a18; }
@@ -264,6 +269,87 @@ function getAiTagClass(aiUse) {
   return 'tag-ai-neither';
 }
 
+function normalizeOrgName(s) {
+  return String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+function orgNamesMatch(a, b) {
+  const na = normalizeOrgName(a);
+  const nb = normalizeOrgName(b);
+  if (!na || !nb) return false;
+  if (na === nb) return true;
+  return na.includes(nb) || nb.includes(na);
+}
+
+function resetFiltersToAll() {
+  activeCategory = '';
+  activeActor = '';
+  activeAI = '';
+  activeLegal = '';
+  document.querySelectorAll('.pill[data-filter="category"]').forEach(p => {
+    p.classList.toggle('active', (p.dataset.value || '') === '');
+  });
+  document.querySelectorAll('.col-dropdown').forEach(dd => {
+    dd.querySelectorAll('button').forEach(b => b.classList.remove('dd-active'));
+    const allBtn = dd.querySelector('button[data-value=""]');
+    if (allBtn) allBtn.classList.add('dd-active');
+    const icon = dd.parentElement && dd.parentElement.querySelector('.filter-icon');
+    if (icon) icon.classList.remove('filter-active');
+  });
+}
+
+function findOrgRowInTable(wantDecoded) {
+  const tbody = document.getElementById('tableBody');
+  if (!tbody) return null;
+  const rows = tbody.querySelectorAll('tr[data-org-name]');
+  for (const tr of rows) {
+    const name = tr.getAttribute('data-org-name') || '';
+    if (orgNamesMatch(name, wantDecoded)) return tr;
+  }
+  return null;
+}
+
+/** Persists until click outside the row or Escape (see listeners below). */
+let orgHighlightRow = null;
+
+function clearOrgRowHighlight() {
+  if (orgHighlightRow) {
+    orgHighlightRow.classList.remove('row-org-highlight');
+    orgHighlightRow = null;
+  }
+}
+
+let orgScrollAttempted = false;
+
+function scrollToOrgFromUrlIfNeeded() {
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get('org');
+  if (!raw) return;
+  const decoded = decodeURIComponent(raw);
+  let tr = findOrgRowInTable(decoded);
+  if (!tr && !orgScrollAttempted && (activeCategory || activeActor || activeAI || activeLegal)) {
+    orgScrollAttempted = true;
+    resetFiltersToAll();
+    applyFilters();
+    tr = findOrgRowInTable(decoded);
+  }
+  if (!tr) return;
+  clearOrgRowHighlight();
+  orgHighlightRow = tr;
+  tr.classList.add('row-org-highlight');
+  tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.addEventListener('click', function (e) {
+  if (!orgHighlightRow) return;
+  if (orgHighlightRow.contains(e.target)) return;
+  clearOrgRowHighlight();
+});
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') clearOrgRowHighlight();
+});
+
 let allRows = [];
 let activeCategory = '';
 let activeActor = '';
@@ -273,6 +359,7 @@ let sortCol = null;
 let sortAsc = true;
 
 function renderTable(rows) {
+  clearOrgRowHighlight();
   document.getElementById('rowCount').textContent = rows.length;
   const tbody = document.getElementById('tableBody');
 
@@ -323,7 +410,7 @@ function renderTable(rows) {
       legalCell = `<span class="legal-wrap${hasDetails ? ' has-details' : ''}"><span class="cell-tag ${getLegalTagClass(legal)}">${escapeHtml(legal)}</span>${detailHtml}</span>`;
     }
 
-    return `<tr class="${rowCls}">
+    return `<tr class="${rowCls}" data-org-name="${escapeAttr(row[COL.ORG] || '')}">
       <td class="col-org">${orgCell}</td>
       <td class="col-desc">${escapeHtml(row[COL.DESC] || '')}</td>
       <td class="col-category">${categoryTags}</td>
@@ -470,8 +557,10 @@ async function loadData() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
     allRows = parseCSV(text).slice(1);
+    orgScrollAttempted = false;
     initCategoryFromUrl();
     applyFilters();
+    scrollToOrgFromUrlIfNeeded();
   } catch (e) {
     document.getElementById('tableBody').innerHTML =
       `<tr><td colspan="8" class="empty-state">Could not load data. Check that the sheet is published as CSV.</td></tr>`;
