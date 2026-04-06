@@ -241,31 +241,8 @@
   </div>
 </footer>
 
+<script src="explore-data.js"></script>
 <script>
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJVunO_GBT-aRgi7gU2YeIdC1sPa4ZqYNZWS0_H6O9W3wsx3i8xLzS1sTda4w2_ZTQLvcQA7u4ryC6/pub?gid=1389205839&single=true&output=csv';
-
-const PILLAR_MAP = [
-  { key: 'civic participation',          cls: 'p1', rowCls: 'row-p1' },
-  { key: 'deliberation',                 cls: 'p1', rowCls: 'row-p1' },
-  { key: 'election integrity',           cls: 'p2', rowCls: 'row-p2' },
-  { key: 'accountability',               cls: 'p3', rowCls: 'row-p3' },
-  { key: 'transparency',                 cls: 'p3', rowCls: 'row-p3' },
-  { key: 'information environment',      cls: 'p4', rowCls: 'row-p4' },
-  { key: 'epistemics',                   cls: 'p4', rowCls: 'row-p4' },
-  { key: 'civil society',                cls: 'p5', rowCls: 'row-p5' },
-  { key: 'governance',                   cls: 'p7', rowCls: 'row-p7' },
-  { key: 'policy',                       cls: 'p7', rowCls: 'row-p7' },
-];
-
-function getPillarInfo(category) {
-  if (!category) return { cls: '', rowCls: '' };
-  const lower = category.toLowerCase();
-  for (const p of PILLAR_MAP) {
-    if (lower.includes(p.key)) return p;
-  }
-  return { cls: '', rowCls: '' };
-}
-
 function getLegalTagClass(legal) {
   const l = legal.toLowerCase();
   if (l.includes('501(c)(3) and 501(c)(4)')) return 'tag-legal-dual';
@@ -285,33 +262,6 @@ function getAiTagClass(aiUse) {
   if (a === 'subject') return 'tag-ai-subject';
   return 'tag-ai-neither';
 }
-
-function parseCSV(text) {
-  const rows = [];
-  const cols = [];
-  let cur = '', inQuote = false;
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    if (ch === '"') {
-      if (inQuote && text[i + 1] === '"') { cur += '"'; i++; }
-      else { inQuote = !inQuote; }
-    } else if (ch === ',' && !inQuote) {
-      cols.push(cur.trim()); cur = '';
-    } else if ((ch === '\n' || ch === '\r') && !inQuote) {
-      if (ch === '\r' && text[i + 1] === '\n') i++;
-      cols.push(cur.trim()); cur = '';
-      if (cols.some(c => c !== '')) rows.push([...cols]);
-      cols.length = 0;
-    } else {
-      cur += ch;
-    }
-  }
-  cols.push(cur.trim());
-  if (cols.some(c => c !== '')) rows.push(cols);
-  return rows;
-}
-
-const COL = { ORG: 0, WEBSITE: 1, ACTOR: 2, CATEGORY: 3, DESC: 4, PROJECTS: 5, PROJECT_URL: 6, AI_USE: 7, LEGAL: 8, EIN: 9, LEGAL_DETAILS: 10 };
 
 let allRows = [];
 let activeCategory = '';
@@ -475,13 +425,6 @@ document.getElementById('tableBody').addEventListener('click', (e) => {
   if (!wasOpen) wrap.classList.add('open');
 });
 
-function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function escapeAttr(str) {
-  return str.replace(/"/g,'&quot;');
-}
-
 // Column sort handling
 document.querySelectorAll('th[data-sort]').forEach(th => {
   th.addEventListener('click', (e) => {
@@ -499,6 +442,26 @@ document.querySelectorAll('th[data-sort]').forEach(th => {
   });
 });
 
+function initCategoryFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('category');
+  if (!cat) return;
+  activeCategory = decodeURIComponent(cat).trim().toLowerCase();
+  let matched = false;
+  document.querySelectorAll('.pill[data-filter="category"]').forEach(p => {
+    p.classList.remove('active');
+    const v = (p.dataset.value || '').toLowerCase();
+    if (v === activeCategory) {
+      p.classList.add('active');
+      matched = true;
+    }
+  });
+  if (!matched) {
+    var neutralPill = document.querySelector('.pill[data-filter="category"][data-value=""]');
+    if (neutralPill) neutralPill.classList.remove('active');
+  }
+}
+
 async function loadData() {
   if (!SHEET_CSV_URL) return;
   try {
@@ -506,6 +469,7 @@ async function loadData() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
     allRows = parseCSV(text).slice(1);
+    initCategoryFromUrl();
     applyFilters();
   } catch (e) {
     document.getElementById('tableBody').innerHTML =

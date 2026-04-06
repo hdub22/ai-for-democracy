@@ -63,13 +63,19 @@
   .accordion.open .accordion-arrow { transform: rotate(90deg); opacity: 0.7; }
 
   .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-  .accordion.open .accordion-body { max-height: 400px; }
+  .accordion.open .accordion-body { max-height: 560px; }
   .accordion-body-inner { padding: 0 1.6rem 1.6rem 1.6rem; padding-left: calc(1.6rem + 22px + 0.85rem); }
   .accordion-definition { font-size: 0.9rem; line-height: 1.75; color: #444; margin-bottom: 1.25rem; }
   .accordion-orgs-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 0.5rem; }
-  .accordion-orgs { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .accordion-orgs { list-style: none; display: flex; flex-direction: column; gap: 4px; min-height: 4.5rem; }
   .accordion-orgs li { font-size: 13px; font-weight: 500; color: #1a1a18; padding: 0.35rem 0; border-top: 0.5px solid rgba(0,0,0,0.07); }
   .accordion-orgs li:first-child { border-top: none; }
+  .accordion-orgs li a { color: #1a1a18; text-decoration: none; border-bottom: 1px solid #deded8; }
+  .accordion-orgs li a:hover { border-bottom-color: #1a1a18; }
+  .accordion-orgs-empty, .accordion-orgs-status { font-weight: 400; color: #666; font-size: 13px; }
+  .accordion-orgs-foot { margin-top: 0.45rem; padding-top: 0.5rem; border-top: 0.5px solid rgba(0,0,0,0.07); font-size: 12px; }
+  .accordion-orgs-foot a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .accordion-orgs-foot a:hover { text-decoration: underline; }
 
   .p1 { background: #e8f5f1; } .p1 .accordion-name { color: #1a5c4a; } .p1 .accordion-orgs-label { color: #1a5c4a; }
   .p2 { background: #ede8f7; } .p2 .accordion-name { color: #3d2a70; } .p2 .accordion-orgs-label { color: #3d2a70; }
@@ -122,13 +128,12 @@
     </div>
     <div class="accordion-body">
       <div class="accordion-body-inner">
-        <p class="accordion-definition">Healthy democracies depend on active, informed citizens who can meaningfully engage in public decisions. This focus area covers organizations that expand voter participation, support civic education, and create structured spaces for public deliberation. From get-out-the-vote efforts to digital democracy tools, this work sustains the connective tissue between citizens and government.</p>
+        <p class="accordion-definition">Citizens are the foundation of democratic accountability, but only if they can meaningfully participate. This focus area covers organizations that expand voter participation, support civic education, create structured spaces for citizens to shape policy decisions directly, and lower barriers to civic engagement through technology and accessibility tools.</p>
         <p class="accordion-orgs-label">Organizations in this space</p>
-        <ul class="accordion-orgs">
-          <li>National Conference on Citizenship</li>
-          <li>Civic Nation</li>
-          <li>Democracy Works</li>
+        <ul class="accordion-orgs" data-pillar="p1" aria-busy="true">
+          <li class="accordion-orgs-status">Loading organizations&hellip;</li>
         </ul>
+        <p class="accordion-orgs-foot"><a class="accordion-orgs-explore" href="explore.html">Browse all in Explore Data &rarr;</a></p>
       </div>
     </div>
   </div>
@@ -141,13 +146,12 @@
     </div>
     <div class="accordion-body">
       <div class="accordion-body-inner">
-        <p class="accordion-definition">Free and fair elections are the bedrock of democratic legitimacy. This focus area includes organizations that safeguard the mechanics of elections — from secure voting systems and transparent administration to legal protection of voting rights. Their work spans technology, law, and policy to ensure elections remain trustworthy and verifiable.</p>
+        <p class="accordion-definition">Free and fair elections are essential to democratic legitimacy. This focus area covers organizations that safeguard the mechanics of elections, from secure voting systems and transparent administration to legal protection of voting rights. It also includes work to detect AI-generated disinformation and synthetic media in electoral contexts, and to ensure voters have access to accurate, reliable information.</p>
         <p class="accordion-orgs-label">Organizations in this space</p>
-        <ul class="accordion-orgs">
-          <li>Brennan Center for Justice</li>
-          <li>Verified Voting</li>
-          <li>Common Cause</li>
+        <ul class="accordion-orgs" data-pillar="p2" aria-busy="true">
+          <li class="accordion-orgs-status">Loading organizations&hellip;</li>
         </ul>
+        <p class="accordion-orgs-foot"><a class="accordion-orgs-explore" href="explore.html">Browse all in Explore Data &rarr;</a></p>
       </div>
     </div>
   </div>
@@ -160,13 +164,12 @@
     </div>
     <div class="accordion-body">
       <div class="accordion-body-inner">
-        <p class="accordion-definition">Democratic power requires oversight. This focus area covers organizations that monitor government conduct, expose corruption, and ensure public institutions remain answerable to the people they serve. Their tools range from investigative journalism and litigation to open-data infrastructure and public records advocacy.</p>
+        <p class="accordion-definition">Accountability depends on the ability to monitor, expose, and measure. This focus area covers organizations that track government conduct and ensure public institutions remain accountable to the people they serve, through investigative journalism, litigation, open-data infrastructure, and public records advocacy. It also includes organizations that produce longitudinal data on democratic health, making the state of democratic institutions legible to researchers, policymakers, and civil society.</p>
         <p class="accordion-orgs-label">Organizations in this space</p>
-        <ul class="accordion-orgs">
-          <li>Protect Democracy</li>
-          <li>Demos</li>
-          <li>OpenSecrets</li>
+        <ul class="accordion-orgs" data-pillar="p3" aria-busy="true">
+          <li class="accordion-orgs-status">Loading organizations&hellip;</li>
         </ul>
+        <p class="accordion-orgs-foot"><a class="accordion-orgs-explore" href="explore.html">Browse all in Explore Data &rarr;</a></p>
       </div>
     </div>
   </div>
@@ -179,13 +182,12 @@
     </div>
     <div class="accordion-body">
       <div class="accordion-body-inner">
-        <p class="accordion-definition">Democracy depends on citizens being able to form accurate beliefs about the world. This focus area covers organizations working on misinformation, media literacy, platform governance, and the health of the broader information ecosystem. As AI reshapes how content is produced and distributed, this space has become increasingly central to democratic resilience.</p>
+        <p class="accordion-definition">A healthy democracy depends on citizens being able to form accurate beliefs about the world. This focus area covers organizations that support the conditions for shared public discourse, from media literacy and platform governance to local news capacity and tools that help citizens identify synthetic content. It also includes work addressing polarization and epistemic fragmentation.</p>
         <p class="accordion-orgs-label">Organizations in this space</p>
-        <ul class="accordion-orgs">
-          <li>First Draft</li>
-          <li>Poynter Institute</li>
-          <li>News Literacy Project</li>
+        <ul class="accordion-orgs" data-pillar="p4" aria-busy="true">
+          <li class="accordion-orgs-status">Loading organizations&hellip;</li>
         </ul>
+        <p class="accordion-orgs-foot"><a class="accordion-orgs-explore" href="explore.html">Browse all in Explore Data &rarr;</a></p>
       </div>
     </div>
   </div>
@@ -198,13 +200,12 @@
     </div>
     <div class="accordion-body">
       <div class="accordion-body-inner">
-        <p class="accordion-definition">A resilient democracy needs a robust ecosystem of independent organizations that can organize, advocate, and serve communities. This focus area covers groups that fund, train, and support civil society — from community organizers to nonprofit infrastructure builders to civic technology developers. Capacity in this space is what allows all the other focus areas to function.</p>
+        <p class="accordion-definition">A resilient democracy depends on an ecosystem of independent organizations that can organize, advocate, and serve communities. This focus area covers organizations that build the capacity of civil society, such as equipping advocacy groups with new tools, connecting democracy movements with technical expertise, and supporting effective coordination even in restricted or high-pressure environments.</p>
         <p class="accordion-orgs-label">Organizations in this space</p>
-        <ul class="accordion-orgs">
-          <li>Knight Foundation</li>
-          <li>Omidyar Network</li>
-          <li>Civic Hall</li>
+        <ul class="accordion-orgs" data-pillar="p5" aria-busy="true">
+          <li class="accordion-orgs-status">Loading organizations&hellip;</li>
         </ul>
+        <p class="accordion-orgs-foot"><a class="accordion-orgs-explore" href="explore.html">Browse all in Explore Data &rarr;</a></p>
       </div>
     </div>
   </div>
@@ -217,13 +218,12 @@
     </div>
     <div class="accordion-body">
       <div class="accordion-body-inner">
-        <p class="accordion-definition">The rules and norms governing AI and democratic institutions are still being written. This focus area covers organizations that shape policy, develop standards, and advocate for governance frameworks that protect democratic values in the face of technological change. Their work sits at the intersection of law, technology, and political power.</p>
+        <p class="accordion-definition">The rules and norms governing AI and democratic institutions are in flux. This focus area covers organizations that shape those rules through policy research, legal and regulatory advocacy, and standard-setting. It also includes organizations whose primary lever is producing knowledge — indices, reports, and policy analysis — that informs how democratic institutions are understood, defended, and reformed.</p>
         <p class="accordion-orgs-label">Organizations in this space</p>
-        <ul class="accordion-orgs">
-          <li>Center for Democracy &amp; Technology</li>
-          <li>Partnership on AI</li>
-          <li>AI Now Institute</li>
+        <ul class="accordion-orgs" data-pillar="p7" aria-busy="true">
+          <li class="accordion-orgs-status">Loading organizations&hellip;</li>
         </ul>
+        <p class="accordion-orgs-foot"><a class="accordion-orgs-explore" href="explore.html">Browse all in Explore Data &rarr;</a></p>
       </div>
     </div>
   </div>
@@ -296,7 +296,67 @@
   </div>
 </footer>
 
+<script src="explore-data.js"></script>
 <script>
+  var PILLAR_ORG_ROTATE_MS = 4000;
+  var PILLAR_ORG_VISIBLE = 3;
+
+  function renderPillarOrgChunk(ul, rows, start) {
+    var n = rows.length;
+    var html = [];
+    for (var i = 0; i < Math.min(PILLAR_ORG_VISIBLE, n); i++) {
+      var row = rows[(start + i) % n];
+      var name = escapeHtml(row[COL.ORG] || '');
+      var web = row[COL.WEBSITE] || '';
+      if (web) {
+        html.push('<li><a href="' + escapeAttr(web) + '" target="_blank" rel="noopener">' + name + '</a></li>');
+      } else {
+        html.push('<li>' + name + '</li>');
+      }
+    }
+    ul.innerHTML = html.join('');
+  }
+
+  function setupPillarOrgList(ul, allRows, pillarCls) {
+    var matched = allRows.filter(function (r) { return rowMatchesPillar(r, pillarCls); });
+    matched.sort(function (a, b) {
+      return (a[COL.ORG] || '').localeCompare(b[COL.ORG] || '');
+    });
+    var foot = ul.nextElementSibling;
+    if (foot && foot.classList && foot.classList.contains('accordion-orgs-foot')) {
+      var cat = PILLAR_EXPLORE_CATEGORY[pillarCls];
+      var a = foot.querySelector('a.accordion-orgs-explore');
+      if (a && cat) {
+        a.href = 'explore.html?category=' + encodeURIComponent(cat);
+      }
+    }
+    if (matched.length === 0) {
+      ul.innerHTML = '<li class="accordion-orgs-empty">No organizations with this focus in the dataset yet.</li>';
+      ul.removeAttribute('aria-busy');
+      return;
+    }
+    var start = 0;
+    renderPillarOrgChunk(ul, matched, start);
+    ul.removeAttribute('aria-busy');
+    if (matched.length <= PILLAR_ORG_VISIBLE) return;
+    setInterval(function () {
+      start = (start + 1) % matched.length;
+      renderPillarOrgChunk(ul, matched, start);
+    }, PILLAR_ORG_ROTATE_MS);
+  }
+
+  fetchSheetDataRows().then(function (rows) {
+    document.querySelectorAll('ul.accordion-orgs[data-pillar]').forEach(function (ul) {
+      var pillar = ul.getAttribute('data-pillar');
+      setupPillarOrgList(ul, rows, pillar);
+    });
+  }).catch(function () {
+    document.querySelectorAll('ul.accordion-orgs[data-pillar]').forEach(function (ul) {
+      ul.innerHTML = '<li class="accordion-orgs-empty">Could not load organizations. Try the Explore Data page.</li>';
+      ul.removeAttribute('aria-busy');
+    });
+  });
+
   const accordions = document.querySelectorAll('.accordion');
   accordions.forEach(acc => {
     acc.querySelector('.accordion-header').addEventListener('click', () => {
