@@ -1,0 +1,245 @@
+/* Mobile & small tablets — load after each page’s inline <style> */
+
+@media (max-width: 768px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Navigation */
+  nav {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    min-height: 0;
+    padding: 0.75rem 1rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .nav-logo {
+    align-self: center;
+    text-align: center;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 0.75rem;
+    row-gap: 0.5rem;
+  }
+
+  .nav-links a {
+    font-size: 12px;
+    padding: 0.35rem 0.2rem;
+  }
+
+  /* Horizontal rhythm (pages use 3rem side padding) */
+  .section-divider {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .page-header {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.25rem !important;
+  }
+
+  .content {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  footer {
+    padding: 1.25rem 1rem !important;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  /* Index */
+  .hero {
+    padding: 1.5rem 1rem 2rem !important;
+  }
+
+  .stat-row {
+    gap: 1.25rem;
+    flex-direction: column;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .funder-band {
+    padding: 1rem 1rem !important;
+  }
+
+  .funder-band-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .funder-band-text {
+    white-space: normal !important;
+    text-align: center;
+  }
+
+  .questions-section {
+    padding: 1.5rem 1rem 0.5rem !important;
+  }
+
+  .data-preview-section {
+    padding: 2rem 1rem 1.5rem !important;
+  }
+
+  .data-preview-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .shuffle-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .pillars-section {
+    padding: 2.5rem 1rem !important;
+  }
+
+  .aia-section {
+    padding: 2rem 1rem !important;
+  }
+
+  .aia-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .aia-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Explore */
+  .filter-wrap {
+    padding: 1rem 1rem 0 !important;
+  }
+
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-row-label {
+    margin-bottom: 0.35rem;
+  }
+
+  .filter-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-wrap {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-bottom: 3rem !important;
+  }
+
+  /* Project spotlight */
+  .spotlight-section {
+    padding: 1.5rem 1rem 3rem !important;
+  }
+
+  .spotlight-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .modal-backdrop {
+    padding: 0.75rem !important;
+    align-items: center;
+  }
+
+  .modal {
+    max-height: 90vh;
+  }
+
+  .modal-photo {
+    height: 160px;
+  }
+
+  .modal-body {
+    padding: 1.25rem 1.1rem 1.5rem !important;
+  }
+
+  .modal-title {
+    font-size: 1.15rem !important;
+  }
+
+  /* Pillars */
+  .definitions-section {
+    padding: 1.5rem 1rem 2rem !important;
+  }
+
+  .pillars-section-header {
+    padding: 1.5rem 1rem 0 !important;
+  }
+
+  .pillars-list {
+    padding: 0.75rem 1rem 2rem !important;
+  }
+
+  .terms-details-inner {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .terms-table {
+    min-width: 480px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0.5rem 0;
+  }
+
+  .method-section .pillar-table {
+    min-width: 560px;
+  }
+
+  .accordion-header {
+    padding: 1.1rem 1rem !important;
+    gap: 0.65rem;
+  }
+
+  .accordion-body-inner {
+    padding: 0 1rem 1.25rem !important;
+    padding-left: 1rem !important;
+  }
+
+  .accordion.open .accordion-body {
+    max-height: 80vh;
+  }
+
+  .code-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .resource-section {
+    padding-top: 2rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1,
+  .page-header h1 {
+    font-size: clamp(1.5rem, 7vw, 2rem) !important;
+  }
+
+  .pill {
+    font-size: 12px;
+    padding: 0.4rem 0.75rem;
+  }
+}
