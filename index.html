@@ -105,13 +105,26 @@
   .aia-see-all { font-size: 13px; color: var(--accent); font-weight: 500; text-decoration: none; flex-shrink: 0; }
   .aia-see-all:hover { text-decoration: underline; }
   .aia-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .aia-card { background: white; border: 0.5px solid #deded8; border-radius: 8px; padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 0.5rem; transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.15s ease, box-shadow 0.15s ease; cursor: pointer; }
+  .aia-card { background: white; border: 0.5px solid #deded8; border-radius: 8px; padding: 0; display: flex; flex-direction: column; overflow: hidden; transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.15s ease, box-shadow 0.15s ease; cursor: pointer; }
   .aia-card:hover { border-color: #aaa; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
   .aia-card:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
   .aia-card.fading { opacity: 0; transform: scale(0.96); }
+  .aia-card-preview { height: 112px; flex-shrink: 0; background: #e8e8e4; position: relative; overflow: hidden; }
+  .aia-card-preview-img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
+  .aia-card-preview-img.is-contain { object-fit: contain; }
+  .aia-card-preview.aia-card-preview--neutral { background: #e8e8e4; }
+  .aia-card-preview.tag-p1 { background: #c8ede4; }
+  .aia-card-preview.tag-p2 { background: #d8cef0; }
+  .aia-card-preview.tag-p3 { background: #f8d8c0; }
+  .aia-card-preview.tag-p4 { background: #c8d8f0; }
+  .aia-card-preview.tag-p5 { background: #cceacc; }
+  .aia-card-preview.tag-p6 { background: #f8e8b8; }
+  .aia-card-preview.tag-p7 { background: #ecd0e4; }
+  .aia-card-body { padding: 0.95rem 1.1rem 1.15rem; display: flex; flex-direction: column; gap: 0.45rem; flex: 1; min-height: 0; }
+  .aia-card-body .org-card-tag { margin-bottom: 0; }
   .aia-card-name { font-size: 15px; font-weight: 600; color: #1a1a18; line-height: 1.35; }
   .aia-card-desc { font-size: 13px; color: #555; line-height: 1.65; flex: 1; }
-  .aia-card-org { font-size: 12px; color: #aaa; margin-top: 0.25rem; text-decoration: none; border-bottom: 1px solid #deded8; align-self: flex-start; }
+  .aia-card-org { font-size: 12px; color: #aaa; margin-top: 0.15rem; text-decoration: none; border-bottom: 1px solid #deded8; align-self: flex-start; }
   .aia-card-org:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
   footer { padding: 1.75rem 3rem; border-top: 0.5px solid #deded8; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: #FAFAF7; }
@@ -258,7 +271,18 @@ function escapeHtml(s) {
 }
 
 const spotlights = (typeof SPOTLIGHT_CARDS !== 'undefined' ? SPOTLIGHT_CARDS : []).map(function (c) {
-  return { name: c.name, desc: c.desc, tag: c.tagClass, cat: c.tag, org: c.org, exploreOrg: c.exploreOrg };
+  return {
+    name: c.name,
+    desc: c.desc,
+    tag: c.tagClass,
+    cat: c.tag,
+    org: c.org,
+    exploreOrg: c.exploreOrg,
+    image: c.image,
+    imageFit: c.imageFit,
+    imagePosition: c.imagePosition,
+    photoBg: c.photoBg
+  };
 });
 
 let orgs = [];
@@ -322,13 +346,29 @@ function aiaPickRandom(exclude) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+function aiaCardPreviewHtml(s) {
+  if (!s.image) {
+    const tc = (s.tag && String(s.tag).trim()) ? escapeHtml(String(s.tag).trim()) : 'aia-card-preview--neutral';
+    return '<div class="aia-card-preview ' + tc + '" aria-hidden="true"></div>';
+  }
+  const fitClass = s.imageFit === 'contain' ? ' is-contain' : '';
+  const posAttr = s.imagePosition ? ' style="object-position: ' + escapeHtml(s.imagePosition) + '"' : '';
+  const wrapStyle = s.photoBg ? ' style="background-color: ' + escapeHtml(s.photoBg) + '"' : '';
+  return '<div class="aia-card-preview"' + wrapStyle + '>' +
+    '<img class="aia-card-preview-img' + fitClass + '" src="' + escapeHtml(s.image) + '" alt="" width="400" height="112" loading="lazy" decoding="async"' + posAttr + '>' +
+    '</div>';
+}
+
 function aiaRenderCard(s) {
   const teaser = typeof spotlightFirstSentence === 'function' ? spotlightFirstSentence(s.desc) : s.desc;
   return `<div class="aia-card" tabindex="0" role="link" aria-label="Open ${escapeHtml(s.name)} in Project Spotlight" data-name="${escapeHtml(s.name)}">
-    <span class="org-card-tag ${s.tag}">${escapeHtml(s.cat)}</span>
-    <div class="aia-card-name">${escapeHtml(s.name)}</div>
-    <div class="aia-card-desc">${escapeHtml(teaser)}</div>
-    <a class="aia-card-org" href="explore.html?org=${encodeURIComponent(s.exploreOrg || s.org || '')}">${escapeHtml(s.org)}</a>
+    ${aiaCardPreviewHtml(s)}
+    <div class="aia-card-body">
+      <span class="org-card-tag ${s.tag}">${escapeHtml(s.cat)}</span>
+      <div class="aia-card-name">${escapeHtml(s.name)}</div>
+      <div class="aia-card-desc">${escapeHtml(teaser)}</div>
+      <a class="aia-card-org" href="explore.html?org=${encodeURIComponent(s.exploreOrg || s.org || '')}">${escapeHtml(s.org)}</a>
+    </div>
   </div>`;
 }
 
