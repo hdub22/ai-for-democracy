@@ -101,8 +101,7 @@
 
   /* Banded rows */
   tbody tr:nth-child(even) td { background: #f4f4f0; }
-  tbody tr:hover td { background: #eaeae4; }
-
+  /* Spotlight deep-link / click selection only (no row hover) */
   tbody tr.row-org-highlight td {
     background: #e6f3ee !important;
     box-shadow: inset 4px 0 0 var(--accent);
@@ -357,6 +356,19 @@ document.addEventListener('click', function (e) {
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') clearOrgRowHighlight();
 });
+
+(function () {
+  const tb = document.getElementById('tableBody');
+  if (!tb) return;
+  tb.addEventListener('click', function (e) {
+    const tr = e.target.closest('tr[data-org-name]');
+    if (!tr) return;
+    if (e.target.closest('a[href]')) return;
+    clearOrgRowHighlight();
+    orgHighlightRow = tr;
+    tr.classList.add('row-org-highlight');
+  });
+})();
 
 let allRows = [];
 let activeCategory = '';
