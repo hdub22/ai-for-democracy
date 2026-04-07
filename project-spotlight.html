@@ -17,7 +17,7 @@
   .nav-links a:hover { color: #1a1a18; }
   .nav-links a.active { color: #1a1a18; font-weight: 500; }
 
-  .page-header { padding: 2.5rem 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .page-header { padding: 2.5rem 3rem 2rem; max-width: 1320px; margin: 0 auto; }
   .page-header h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 600; line-height: 1.2; color: #1a1a18; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
   .page-header p { font-size: 0.95rem; color: #555; line-height: 1.75; }
   .page-header p a { color: var(--accent); text-decoration: none; font-weight: 500; }
@@ -25,15 +25,23 @@
 
   .section-divider { height: 0.5px; background: #deded8; margin: 0 3rem; }
 
-  .spotlight-section { padding: 2.5rem 3rem 4rem; max-width: 900px; margin: 0 auto; }
+  .spotlight-section { padding: 2.5rem 3rem 4rem; max-width: 1320px; margin: 0 auto; }
 
-  .spotlight-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .spotlight-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 
-  .spotlight-card { background: white; border: 0.5px solid #deded8; border-radius: 8px; padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 0.6rem; cursor: pointer; transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease; }
-  .spotlight-card:hover { border-color: #aaa; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .spotlight-card { background: white; border: 0.5px solid #deded8; border-radius: 10px; padding: 0; display: flex; flex-direction: column; overflow: hidden; cursor: pointer; transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease; }
+  .spotlight-card:hover { border-color: #aaa; transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.08); }
+
+  .card-preview { height: 168px; flex-shrink: 0; background: #e8e8e4; position: relative; overflow: hidden; }
+  .card-preview-img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
+  .card-preview-img.is-contain { object-fit: contain; }
+  /* No-image banner: reuse focus-area colors from .tag-p1–.tag-p7; fallback if tagClass missing */
+  .card-preview.card-preview--neutral { background: #e8e8e4; }
+
+  .card-body { padding: 1.15rem 1.35rem 1.35rem; display: flex; flex-direction: column; gap: 0.55rem; flex: 1; min-height: 0; }
 
   .card-tag { display: inline-block; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 3px; align-self: flex-start; }
-  .card-name { font-size: 14px; font-weight: 600; color: #1a1a18; line-height: 1.35; }
+  .card-name { font-size: 15px; font-weight: 600; color: #1a1a18; line-height: 1.35; }
   .card-desc { font-size: 13px; color: #555; line-height: 1.65; flex: 1; }
   .card-org { font-size: 12px; color: #aaa; font-weight: 400; align-self: flex-start; }
   a.card-org-link { color: inherit; text-decoration: none; border-bottom: 1px solid #deded8; cursor: pointer; }
@@ -61,6 +69,17 @@
   .modal-photo-img.is-contain { object-fit: contain; object-position: center center; }
   .modal-photo.has-image .modal-photo-img { display: block; }
   .modal-photo.has-image .modal-photo-placeholder { display: none; }
+  /* No screenshot: match card strip — no grey placeholder text */
+  .modal-photo.modal-photo--solid .modal-photo-placeholder { display: none; }
+  /* .modal-photo { background } is declared after .tag-p1–p7, so it was overriding tag colors — use explicit combos */
+  .modal-photo.modal-photo--solid.modal-photo--neutral { background: #e8e8e4; }
+  .modal-photo.modal-photo--solid.tag-p1 { background: #c8ede4; }
+  .modal-photo.modal-photo--solid.tag-p2 { background: #d8cef0; }
+  .modal-photo.modal-photo--solid.tag-p3 { background: #f8d8c0; }
+  .modal-photo.modal-photo--solid.tag-p4 { background: #c8d8f0; }
+  .modal-photo.modal-photo--solid.tag-p5 { background: #cceacc; }
+  .modal-photo.modal-photo--solid.tag-p6 { background: #f8e8b8; }
+  .modal-photo.modal-photo--solid.tag-p7 { background: #ecd0e4; }
   .modal-photo-placeholder { font-size: 12px; color: #aaa; letter-spacing: 0.08em; text-transform: uppercase; }
 
   .modal-body { padding: 1.75rem 2rem 2rem; }
@@ -150,8 +169,23 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
   }
 
-  /** Order used on this page (spread categories in the 2-col grid); same order for modal lookup. */
+  /** Order used on this page (spread categories in the grid); same order for modal lookup. */
   var spotlightGridOrder = [];
+
+  function cardPreviewMarkup(p) {
+    if (!p || !p.image) {
+      var tagCls = (p && p.tagClass && String(p.tagClass).trim()) ? escapeHtml(p.tagClass.trim()) : 'card-preview--neutral';
+      return '<div class="card-preview ' + tagCls + '" aria-hidden="true"></div>';
+    }
+    var fitClass = p.imageFit === 'contain' ? ' is-contain' : '';
+    var posAttr = p.imagePosition ? ' style="object-position: ' + escapeHtml(p.imagePosition) + '"' : '';
+    var wrapStyle = p.photoBg ? ' style="background-color: ' + escapeHtml(p.photoBg) + '"' : '';
+    return (
+      '<div class="card-preview"' + wrapStyle + '>' +
+        '<img class="card-preview-img' + fitClass + '" src="' + escapeHtml(p.image) + '" alt="" width="440" height="168" loading="lazy" decoding="async"' + posAttr + '>' +
+      '</div>'
+    );
+  }
 
   function renderSpotlightGrid() {
     const grid = document.getElementById('spotlightGrid');
@@ -162,11 +196,14 @@
     grid.innerHTML = spotlightGridOrder.map(function (p, idx) {
       return (
         '<div class="spotlight-card" data-index="' + idx + '">' +
-          '<span class="card-tag ' + p.tagClass + '">' + escapeHtml(p.tag) + '</span>' +
-          '<div class="card-name">' + escapeHtml(p.name) + '</div>' +
-          '<div class="card-desc">' + escapeHtml(typeof spotlightFirstSentence === 'function' ? spotlightFirstSentence(p.desc) : p.desc) + '</div>' +
-          '<a class="card-org card-org-link" href="explore.html?org=' + encodeURIComponent(p.exploreOrg || p.org || '') + '">' + escapeHtml(p.org) + '</a>' +
-          '<span class="card-expand">↗ Read more</span>' +
+          cardPreviewMarkup(p) +
+          '<div class="card-body">' +
+            '<span class="card-tag ' + escapeHtml(p.tagClass || '') + '">' + escapeHtml(p.tag) + '</span>' +
+            '<div class="card-name">' + escapeHtml(p.name) + '</div>' +
+            '<div class="card-desc">' + escapeHtml(typeof spotlightFirstSentence === 'function' ? spotlightFirstSentence(p.desc) : p.desc) + '</div>' +
+            '<a class="card-org card-org-link" href="explore.html?org=' + encodeURIComponent(p.exploreOrg || p.org || '') + '">' + escapeHtml(p.org) + '</a>' +
+            '<span class="card-expand">↗ Read more</span>' +
+          '</div>' +
         '</div>'
       );
     }).join('');
@@ -181,9 +218,19 @@
   const modalDesc = document.getElementById('modalDesc');
   const modalPhoto = document.getElementById('modalPhoto');
   const modalPhotoImg = document.getElementById('modalPhotoImg');
+  var MODAL_TAG_CLASSES = ['tag-p1', 'tag-p2', 'tag-p3', 'tag-p4', 'tag-p5', 'tag-p6', 'tag-p7'];
+
+  function resetModalPhotoBanner() {
+    modalPhoto.classList.remove('has-image', 'modal-photo--solid', 'modal-photo--neutral');
+    MODAL_TAG_CLASSES.forEach(function (c) {
+      modalPhoto.classList.remove(c);
+    });
+    modalPhoto.style.backgroundColor = '';
+  }
 
   function openSpotlightModal(p) {
     if (!p) return;
+    resetModalPhotoBanner();
     if (p.image) {
       modalPhotoImg.src = p.image;
       modalPhotoImg.alt = 'Screenshot: ' + (p.name || 'Project');
@@ -200,8 +247,12 @@
       modalPhotoImg.alt = '';
       modalPhotoImg.classList.remove('is-contain');
       modalPhotoImg.style.objectPosition = '';
-      modalPhoto.style.backgroundColor = '';
-      modalPhoto.classList.remove('has-image');
+      modalPhoto.classList.add('modal-photo--solid');
+      if (p.tagClass && String(p.tagClass).trim()) {
+        modalPhoto.classList.add(String(p.tagClass).trim());
+      } else {
+        modalPhoto.classList.add('modal-photo--neutral');
+      }
     }
     modalTag.textContent = p.tag;
     modalTag.className = 'card-tag ' + p.tagClass;

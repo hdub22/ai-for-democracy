@@ -1,7 +1,7 @@
 /**
  * Project Spotlight cards — shared by index.html (shuffle preview) and project-spotlight.html.
  * Edit this file to update spotlight content everywhere.
- * Optional fields per card: url (project link), image (path to header image for modal, e.g. images/foo.png), imageFit: 'contain' (fit whole image without cropping; default is cover), photoBg (e.g. '#fff' for header strip behind image), imagePosition (CSS object-position when using cover, e.g. 'center top'), exploreOrg (string to match Explore "Actor" column when it differs from org).
+ * Optional fields per card: url (project link), image (path to header image for modal, e.g. images/foo.png; omit for a solid-color card banner using tagClass), imageFit: 'contain' (fit whole image without cropping; default is cover), photoBg (e.g. '#fff' for header strip behind image), imagePosition (CSS object-position when using cover, e.g. 'center top'), exploreOrg (string to match Explore "Actor" column when it differs from org).
  * Collapsed cards show spotlightFirstSentence(desc); modal uses long when set, otherwise full desc.
  */
 var SPOTLIGHT_CARDS = [
@@ -112,7 +112,7 @@ var SPOTLIGHT_CARDS = [
 ];
 
 /**
- * Reorder cards for a 2-column grid so neighbors (left/right and top/bottom) tend to differ in tag.
+ * Reorder cards for a 3-column grid so neighbors (left and above) tend to differ in tag.
  * Uses a greedy pass that picks the next card with the fewest tag clashes; some clashes are unavoidable
  * when many cards share one category.
  */
@@ -122,6 +122,7 @@ function spotlightCardsForGrid(cards) {
   var n = arr.length;
   var result = new Array(n);
   var remaining = [];
+  var cols = 3;
   var i;
   for (i = 0; i < n; i++) remaining.push(i);
 
@@ -132,8 +133,8 @@ function spotlightCardsForGrid(cards) {
   function conflictCount(slot, p) {
     var t = tagKey(p);
     var c = 0;
-    if (slot >= 1 && slot % 2 === 1 && tagKey(result[slot - 1]) === t) c++;
-    if (slot >= 2 && tagKey(result[slot - 2]) === t) c++;
+    if (slot >= 1 && slot % cols !== 0 && tagKey(result[slot - 1]) === t) c++;
+    if (slot >= cols && tagKey(result[slot - cols]) === t) c++;
     return c;
   }
 
